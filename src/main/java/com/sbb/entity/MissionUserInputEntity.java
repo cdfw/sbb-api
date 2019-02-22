@@ -17,7 +17,6 @@ public class MissionUserInputEntity {
     private Timestamp createdDtm;
     private Timestamp updtdDtm;
     private String sttsId;
-    @JsonIgnore
     private UserEntity userById;
     private RegionEntity regionByRegionId;
     @JsonIgnore

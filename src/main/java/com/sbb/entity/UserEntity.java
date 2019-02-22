@@ -2,6 +2,8 @@ package com.sbb.entity;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -22,6 +24,7 @@ public class UserEntity {
     private Timestamp updatedDtm;
     private DataTypeEntity dataTypeByDataTypeId;
     private UserRoleEntity userRoleByRoleId;
+    @JsonIgnore
     private Collection<MissionUserInputEntity> missionUserInputsById;
     private Collection<UserRegionMappingEntity> userRegionMappingsById;
 

@@ -15,6 +15,7 @@ com\sbb\entity\UserRoleEntity.class
 com\sbb\entity\JrsdctnCtgryEntity.class
 com\sbb\repository\MissionInputRepository.class
 com\sbb\entity\RegionEntity.class
+com\sbb\helper\AppConstants.class
 com\sbb\Application.class
 com\sbb\entity\ServiceMatrixEntity.class
 com\sbb\controller\ServiceMatrixController.class

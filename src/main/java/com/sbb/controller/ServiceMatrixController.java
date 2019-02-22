@@ -2,6 +2,7 @@ package com.sbb.controller;
 
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.sbb.Greeting;
@@ -30,10 +31,18 @@ public class ServiceMatrixController {
     }
 
     @RequestMapping("/service/{regionCode}")
-    public Object[] fetchServiceMatrix(@PathVariable("regionCode")String regionCode) {
+    public List<ServiceMatrixEntity> fetchServiceMatrix(@PathVariable("regionCode")String regionCode) {
         // repository.
         System.out.println(regionCode);
-        List<ServiceMatrixEntity> repo = (List<ServiceMatrixEntity>) repository.findAll();
-        return repo.toArray();
+            List<ServiceMatrixEntity> repo = (List<ServiceMatrixEntity>) repository.findAll();
+        return repo;
+    }
+
+    @RequestMapping("/{regionCode}/task/{taskId}")
+    public ServiceMatrixEntity fetchTaskInfo(@PathVariable("regionCode")String regionCode, @PathVariable("taskId")String taskId) {
+        // repository.
+        System.out.println("Region code is --> "+regionCode + "Task Id is --> "+ taskId);
+        ServiceMatrixEntity repo =  repository.findById(taskId);
+        return repo;
     }
 }
