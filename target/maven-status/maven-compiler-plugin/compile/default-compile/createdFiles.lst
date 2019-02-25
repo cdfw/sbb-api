@@ -2,6 +2,7 @@ com\sbb\controller\MissionInputController.class
 com\sbb\entity\MissionUserInputEntityPK.class
 com\sbb\entity\DataTypeEntity.class
 com\sbb\entity\UserRegionMappingEntityPK.class
+com\sbb\repository\StatusRepository.class
 com\sbb\entity\UserRegionMappingEntity.class
 com\sbb\repository\UserRepository.class
 com\sbb\RestConfig.class

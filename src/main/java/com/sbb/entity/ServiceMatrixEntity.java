@@ -1,5 +1,7 @@
 package com.sbb.entity;
 
+import org.hibernate.annotations.Formula;
+
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Objects;
@@ -15,12 +17,18 @@ public class ServiceMatrixEntity {
     private String taskName;
     private String taskDesc;
     private String multDesc;
+    private String desiredPerf;
+    private String addtnlBudgetFator;
     private Integer frequency;
-    //private String sttsId;
     private StatusEntity statusBySttsId;
     private Collection<JrsdctnCtgryEntity> jrsdctnCtgriesByTaskId;
     private Collection<LaborClassEntity> laborClassesByTaskId;
     private Collection<MissionUserInputEntity> missionUserInputsByTaskId;
+
+
+    private int inputCount;
+    private String myInput;
+
 
     @Id
     @Column(name = "TASK_ID")
@@ -112,6 +120,45 @@ public class ServiceMatrixEntity {
         this.frequency = frequency;
     }
 
+    @Basic
+    @Column(name = "desired_perf")
+    public String getDesiredPerf() {
+        return desiredPerf;
+    }
+
+    public void setDesiredPerf(String desiredPerf) {
+        this.desiredPerf = desiredPerf;
+    }
+
+    @Basic
+    @Column(name = "budget_factor")
+    public String getAddtnlBudgetFator() {
+        return addtnlBudgetFator;
+    }
+
+    public void setAddtnlBudgetFator(String addtnlBudgetFator) {
+        this.addtnlBudgetFator = addtnlBudgetFator;
+    }
+
+    @Transient
+    public int getInputCount() {
+        return inputCount;
+    }
+
+    public void setInputCount(int inputCount) {
+        this.inputCount = inputCount;
+    }
+
+    @Transient
+    public String getMyInput() {
+        return myInput;
+    }
+
+    public void setMyInput(String myInput) {
+        this.myInput = myInput;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -125,12 +172,15 @@ public class ServiceMatrixEntity {
                 Objects.equals(taskName, that.taskName) &&
                 Objects.equals(taskDesc, that.taskDesc) &&
                 Objects.equals(multDesc, that.multDesc) &&
-                Objects.equals(frequency, that.frequency) ;
+                Objects.equals(frequency, that.frequency) &&
+                Objects.equals(desiredPerf, that.desiredPerf) &&
+                Objects.equals(addtnlBudgetFator, that.addtnlBudgetFator);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(taskId, serviceName, program, subProgram, taskCategory, taskName, taskDesc, multDesc, frequency);
+        return Objects.hash(taskId, serviceName, program, subProgram, taskCategory, taskName, taskDesc, multDesc, frequency,
+                desiredPerf, addtnlBudgetFator );
     }
 
     @ManyToOne

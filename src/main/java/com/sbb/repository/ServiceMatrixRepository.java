@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface ServiceMatrixRepository extends CrudRepository<ServiceMatrixEntity, Integer> {
 
-    @Query("SELECT task from ServiceMatrixEntity task where taskId = :taskId ")
+    @Query("SELECT task from ServiceMatrixEntity task where task.taskId = :taskId")
     public ServiceMatrixEntity findById(@Param("taskId") String taskId);
 
 }

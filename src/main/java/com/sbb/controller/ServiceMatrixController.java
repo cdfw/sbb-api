@@ -1,11 +1,14 @@
 package com.sbb.controller;
 
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 import com.sbb.Greeting;
+import com.sbb.entity.MissionUserInputEntity;
 import com.sbb.entity.ServiceMatrixEntity;
 import com.sbb.repository.ServiceMatrixRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import static java.util.stream.Collectors.toList;
 
 
 @RestController
@@ -30,11 +35,11 @@ public class ServiceMatrixController {
                 String.format(template, name));
     }
 
-    @RequestMapping("/service/{regionCode}")
-    public List<ServiceMatrixEntity> fetchServiceMatrix(@PathVariable("regionCode")String regionCode) {
-        // repository.
+    @RequestMapping("/service/{regionCode}/{userId}")
+    public List<ServiceMatrixEntity> fetchServiceMatrix(@PathVariable("regionCode")String regionCode, @PathVariable("userId")String userId) {
         System.out.println(regionCode);
-            List<ServiceMatrixEntity> repo = (List<ServiceMatrixEntity>) repository.findAll();
+        List<ServiceMatrixEntity> repo = (List<ServiceMatrixEntity>) repository.findAll();
+        processMyInput(repo, userId, regionCode);
         return repo;
     }
 
@@ -43,6 +48,30 @@ public class ServiceMatrixController {
         // repository.
         System.out.println("Region code is --> "+regionCode + "Task Id is --> "+ taskId);
         ServiceMatrixEntity repo =  repository.findById(taskId);
+        repo.setMissionUserInputsByTaskId(repo.getMissionUserInputsByTaskId().stream().filter(
+                input -> regionCode.equals(input.getRegionByRegionId().getRegionName())).
+                collect(Collectors.toCollection(LinkedList<MissionUserInputEntity>::new)));
+
         return repo;
+    }
+
+
+    public void processMyInput(List<ServiceMatrixEntity> repo, String userId, String regionCode) {
+        MissionUserInputEntity myInput = null;
+        List<MissionUserInputEntity> allInputs = null;
+        for(ServiceMatrixEntity task : repo) {
+            myInput = task.getMissionUserInputsByTaskId().stream().filter(
+                    input -> Integer.parseInt(userId) == (input.getId()) && regionCode.equals(input.getRegionByRegionId().getRegionName())).
+                    findAny().orElse(null);
+            if(null != myInput) {
+                task.setMyInput("Yes");
+            } else {
+                task.setMyInput("No");
+            }
+
+            task.setInputCount(task.getMissionUserInputsByTaskId().stream().filter(
+                    input -> regionCode.equals(input.getRegionByRegionId().getRegionName())
+            ).collect(Collectors.toCollection(LinkedList<MissionUserInputEntity>::new)).size());
+        }
     }
 }
