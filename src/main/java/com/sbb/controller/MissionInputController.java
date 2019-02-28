@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -46,12 +46,18 @@ public class MissionInputController {
     }
 
     @RequestMapping(path = "/selectInput/{regionId}/{taskId}/{userId}", method = RequestMethod.GET)
-    public List<MissionUserInputEntity> selectInput(@PathVariable("regionId")int regionId, @PathVariable("taskId")String taskId, @PathVariable("userId")int userId) {
+    public int selectInput(@PathVariable("regionId")int regionId, @PathVariable("taskId")String taskId, @PathVariable("userId")int userId) {
         System.out.println("Inside input");
         UserEntity user = userRepository.findById(userId).get();
-        approveSelectedAndRejectOthers(user, regionId, taskId, userId);
-        List<MissionUserInputEntity> inputList = (List<MissionUserInputEntity>)repository.findInputsByRegionAndTask(regionId, taskId);
-        return inputList;
+        int approvedInp = approveSelectedAndRejectOthers(user, regionId, taskId, userId);
+       /* List<MissionUserInputEntity> approvedInput = user.getMissionUserInputsById().stream()
+                .filter(input -> "A".equals( input.getSttsId())).collect(Collectors.toList());
+        if(null != approvedInput.get(0) ) {
+            return approvedInput.get(0).getInputValue();
+        }*/
+        return approvedInp;
+      /*  List<MissionUserInputEntity> inputList = (List<MissionUserInputEntity>)repository.findInputsByRegionAndTask(regionId, taskId);
+        return inputList; */
     }
 
 
@@ -98,11 +104,13 @@ public class MissionInputController {
     }
 
     // region and task to be added
-    private void approveSelectedAndRejectOthers(UserEntity user, int regionId, String taskId , int userId){
+    private int approveSelectedAndRejectOthers(UserEntity user, int regionId, String taskId , int userId){
        Iterator inputs = user.getMissionUserInputsById().iterator();
+       int approvedInput = 0;
         while(inputs.hasNext()) {
             MissionUserInputEntity input = (MissionUserInputEntity)inputs.next();
             if ( userId == input.getId() && regionId == input.getRegionId() && taskId.equals(input.getTaskId())) {
+                approvedInput = input.getInputValue();
                 if (!AppConstants.STTS_APPROVED.equals(input.getSttsId())) {
                     input.setSttsId(AppConstants.STTS_APPROVED);
                     repository.save(input);
@@ -114,5 +122,6 @@ public class MissionInputController {
             }
             repository.rejectUnselectedInputs(regionId, taskId,userId);
         }
+        return approvedInput;
     }
 }

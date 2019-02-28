@@ -24,10 +24,9 @@ public class ServiceMatrixEntity {
     private Collection<JrsdctnCtgryEntity> jrsdctnCtgriesByTaskId;
     private Collection<LaborClassEntity> laborClassesByTaskId;
     private Collection<MissionUserInputEntity> missionUserInputsByTaskId;
-
-
     private int inputCount;
     private String myInput;
+    private int totalLaborHours;
 
 
     @Id
@@ -158,6 +157,20 @@ public class ServiceMatrixEntity {
         this.myInput = myInput;
     }
 
+    @Transient
+    public int getTotalLaborHours() {
+        return totalLaborHours;
+    }
+
+    public void setTotalLaborHours(int totalLaborHours) {
+        this.totalLaborHours = totalLaborHours;
+    }
+
+
+    @PostLoad
+    public final void postLoad() {
+        this.setTotalLaborHours(getLaborClassesByTaskId().stream().filter(o -> o.getTime() != 0).mapToInt(o -> o.getTime()).sum());
+    }
 
     @Override
     public boolean equals(Object o) {
