@@ -3,12 +3,9 @@ package com.sbb.controller;
 import com.sbb.entity.UserEntity;
 import com.sbb.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 public class UserController {
@@ -18,9 +15,33 @@ public class UserController {
 
     @RequestMapping(path = "/authenticateUser", method = RequestMethod.POST)
     public UserEntity authenticateUser(@RequestBody Map<String, String> request) {
-        System.out.println("Inside authenticate user "+request);
-        UserEntity user = repository.findByUserName(request.get("username"), request.get("password"));
-        System.out.println("Inside authenticate user "+user);
+        UserEntity user = repository.findByCredentials(request.get("username"), request.get("password"));
+        if (null != user) {
+            processUser(user);
+        }
         return user;
    }
+
+    @RequestMapping(path = "/logout", method = RequestMethod.POST)
+    public void logoutUser(@RequestBody Map<String, Integer> request) {
+        System.out.println("Inside logout "+request.get("userId"));
+        UserEntity user = repository.findById(request.get("userId")).get();
+        user.setUserToken("");
+        repository.save(user);
+    }
+
+
+   public void processUser(UserEntity user){
+        user.setUserToken(generateToken());
+        repository.save(user);
+        user.setPassword("");
+   }
+
+   public String generateToken(){
+       UUID uuid = UUID.randomUUID();
+       String randomUUIDString = uuid.toString();
+       return randomUUIDString;
+   }
+
+
 }

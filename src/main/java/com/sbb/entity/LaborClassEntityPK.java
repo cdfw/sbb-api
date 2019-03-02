@@ -8,7 +8,7 @@ import java.util.Objects;
 public class LaborClassEntityPK implements Serializable {
     private String title;
     private String role;
-    private int time;
+    private double time;
     private String taskId;
 
     @Column(name = "title")
@@ -33,11 +33,11 @@ public class LaborClassEntityPK implements Serializable {
 
     @Column(name = "Time")
     @Id
-    public int getTime() {
+    public double getTime() {
         return time;
     }
 
-    public void setTime(int time) {
+    public void setTime(double time) {
         this.time = time;
     }
 

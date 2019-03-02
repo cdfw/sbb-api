@@ -11,7 +11,7 @@ import java.util.Objects;
 public class LaborClassEntity {
     private String title;
     private String role;
-    private int time;
+    private double time;
     private String taskId;
     @JsonIgnore
     private ServiceMatrixEntity serviceMatrixByTaskId;
@@ -38,11 +38,11 @@ public class LaborClassEntity {
 
     @Id
     @Column(name = "Time")
-    public int getTime() {
+    public double getTime() {
         return time;
     }
 
-    public void setTime(int time) {
+    public void setTime(double time) {
         this.time = time;
     }
 
