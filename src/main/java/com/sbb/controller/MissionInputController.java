@@ -70,11 +70,11 @@ public class MissionInputController {
         ServiceMatrixEntity matrix = serviceRepository.findById(request.get("taskId"));
         if(AppConstants.ADMIN.equals(user.getUserRoleByRoleId().getRoleName()) || AppConstants.MISSION_LEAD.equals(user.getUserRoleByRoleId().getRoleName())) {
             mapUserInputToEntity(request, inputEntity, regionId, AppConstants.STTS_APPROVED);
-            matrix.setStatusBySttsId(statusRepository.findById(AppConstants.STTS_APPROVED));
+            //matrix.setStatusBySttsId(statusRepository.findById(AppConstants.STTS_APPROVED));
             repository.rejectUnselectedInputs(regionId, request.get("taskId"),Integer.parseInt(request.get("userId")));
         } else if(AppConstants.MISSION_RESP.equals(user.getUserRoleByRoleId().getRoleName())) {
             mapUserInputToEntity(request, inputEntity, regionId, AppConstants.STTS_PENDING);
-            matrix.setStatusBySttsId(statusRepository.findById(AppConstants.STTS_PENDING));
+            //matrix.setStatusBySttsId(statusRepository.findById(AppConstants.STTS_PENDING));
         }
         MissionUserInputEntity savedInput = repository.save(inputEntity);
         serviceRepository.save(matrix);
@@ -115,9 +115,9 @@ public class MissionInputController {
                     input.setSttsId(AppConstants.STTS_APPROVED);
                     repository.save(input);
 
-                    ServiceMatrixEntity matrix = serviceRepository.findById(taskId);
-                    matrix.setStatusBySttsId(statusRepository.findById(AppConstants.STTS_APPROVED));
-                    serviceRepository.save(matrix);
+                  //  ServiceMatrixEntity matrix = serviceRepository.findById(taskId);
+                  //  matrix.setStatusBySttsId(statusRepository.findById(AppConstants.STTS_APPROVED));
+                  //  serviceRepository.save(matrix);
                 }
             }
             repository.rejectUnselectedInputs(regionId, taskId,userId);

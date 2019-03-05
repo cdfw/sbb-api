@@ -1,9 +1,11 @@
 package com.sbb.entity;
 
+import com.sbb.helper.AppConstants;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Objects;
 
 @Entity
@@ -27,6 +29,7 @@ public class ServiceMatrixEntity {
     private int inputCount;
     private String myInput;
     private double totalLaborHours;
+    private String taskStatus;
 
 
     @Id
@@ -166,10 +169,32 @@ public class ServiceMatrixEntity {
         this.totalLaborHours = totalLaborHours;
     }
 
+    @Transient
+    public String getTaskStatus() {
+        return taskStatus;
+    }
+
+    public void setTaskStatus(String taskStatus) {
+        this.taskStatus = taskStatus;
+    }
 
     @PostLoad
     public final void postLoad() {
         this.setTotalLaborHours(getLaborClassesByTaskId().stream().filter(o -> o.getTime() != 0).mapToDouble(o -> o.getTime()).sum());
+
+       /* if(getMissionUserInputsByTaskId().size() == 0 ) {
+            this.setTaskStatus("Not started");
+        } else {
+            this.setTaskStatus("Pending");
+            Iterator inputs = getMissionUserInputsByTaskId().iterator();
+            while(inputs.hasNext()) {
+                MissionUserInputEntity input = (MissionUserInputEntity) inputs.next();
+                if(AppConstants.STTS_APPROVED.equals(input.getSttsId())) {
+                    this.setTaskStatus("Validated");
+                    break;
+                }
+            }
+        }*/
     }
 
     @Override

@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import com.sbb.Greeting;
 import com.sbb.entity.MissionUserInputEntity;
 import com.sbb.entity.ServiceMatrixEntity;
+import com.sbb.helper.AppConstants;
 import com.sbb.repository.ServiceMatrixRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,12 +48,12 @@ public class ServiceMatrixController {
     public ServiceMatrixEntity fetchTaskInfo(@PathVariable("regionCode")String regionCode, @PathVariable("taskId")String taskId) {
         // repository.
         System.out.println("Region code is --> "+regionCode + "Task Id is --> "+ taskId);
-        ServiceMatrixEntity repo =  repository.findById(taskId);
-        repo.setMissionUserInputsByTaskId(repo.getMissionUserInputsByTaskId().stream().filter(
+        ServiceMatrixEntity task =  repository.findById(taskId);
+       /* task.setMissionUserInputsByTaskId(task.getMissionUserInputsByTaskId().stream().filter(
                 input -> regionCode.equals(input.getRegionByRegionId().getRegionName())).
-                collect(Collectors.toCollection(LinkedList<MissionUserInputEntity>::new)));
-
-        return repo;
+                collect(Collectors.toCollection(LinkedList<MissionUserInputEntity>::new))); */
+        setTaskStatus(task, regionCode);
+        return task;
     }
 
 
@@ -72,6 +73,25 @@ public class ServiceMatrixController {
             task.setInputCount(task.getMissionUserInputsByTaskId().stream().filter(
                     input -> regionCode.equals(input.getRegionByRegionId().getRegionName())
             ).collect(Collectors.toCollection(LinkedList<MissionUserInputEntity>::new)).size());
+            setTaskStatus(task,regionCode);
         }
+    }
+
+
+    public void setTaskStatus(ServiceMatrixEntity task, String regionCode) {
+        LinkedList<MissionUserInputEntity> regionInputs =task.getMissionUserInputsByTaskId().stream().filter( input -> regionCode.equals(input.getRegionByRegionId().getRegionName())).
+                collect(Collectors.toCollection(LinkedList<MissionUserInputEntity>::new));
+        if(regionInputs.size() == 0 ) {
+            task.setTaskStatus("Not started");
+        } else {
+            task.setTaskStatus("Pending");
+            for (MissionUserInputEntity input : regionInputs) {
+                if(AppConstants.STTS_APPROVED.equals(input.getSttsId())) {
+                    task.setTaskStatus("Validated");
+                    break;
+                }
+            }
+        }
+
     }
 }
