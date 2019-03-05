@@ -52,6 +52,7 @@ public class ServiceMatrixController {
        /* task.setMissionUserInputsByTaskId(task.getMissionUserInputsByTaskId().stream().filter(
                 input -> regionCode.equals(input.getRegionByRegionId().getRegionName())).
                 collect(Collectors.toCollection(LinkedList<MissionUserInputEntity>::new))); */
+        setInputCount(task, regionCode);
         setTaskStatus(task, regionCode);
         return task;
     }
@@ -69,10 +70,7 @@ public class ServiceMatrixController {
             } else {
                 task.setMyInput("No");
             }
-
-            task.setInputCount(task.getMissionUserInputsByTaskId().stream().filter(
-                    input -> regionCode.equals(input.getRegionByRegionId().getRegionName())
-            ).collect(Collectors.toCollection(LinkedList<MissionUserInputEntity>::new)).size());
+            setInputCount(task, regionCode);
             setTaskStatus(task,regionCode);
         }
     }
@@ -92,6 +90,13 @@ public class ServiceMatrixController {
                 }
             }
         }
+
+    }
+
+    public void setInputCount (ServiceMatrixEntity task, String regionCode) {
+        task.setInputCount(task.getMissionUserInputsByTaskId().stream().filter(
+                input -> regionCode.equals(input.getRegionByRegionId().getRegionName())
+        ).collect(Collectors.toCollection(LinkedList<MissionUserInputEntity>::new)).size());
 
     }
 }
