@@ -30,6 +30,7 @@ public class ServiceMatrixEntity {
     private String myInput;
     private double totalLaborHours;
     private String taskStatus;
+    private String inputReceived;
 
 
     @Id
@@ -176,6 +177,15 @@ public class ServiceMatrixEntity {
 
     public void setTaskStatus(String taskStatus) {
         this.taskStatus = taskStatus;
+    }
+
+    @Transient
+    public String getInputReceived() {
+        return inputReceived;
+    }
+
+    public void setInputReceived(String inputReceived) {
+        this.inputReceived = inputReceived;
     }
 
     @PostLoad

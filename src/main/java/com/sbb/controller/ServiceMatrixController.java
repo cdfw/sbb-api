@@ -97,6 +97,10 @@ public class ServiceMatrixController {
         task.setInputCount(task.getMissionUserInputsByTaskId().stream().filter(
                 input -> regionCode.equals(input.getRegionByRegionId().getRegionName())
         ).collect(Collectors.toCollection(LinkedList<MissionUserInputEntity>::new)).size());
-
+        if(task.getInputCount()>0) {
+            task.setInputReceived("Yes");
+        } else {
+            task.setInputReceived("No");
+        }
     }
 }
