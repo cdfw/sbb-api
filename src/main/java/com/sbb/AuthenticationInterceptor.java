@@ -23,22 +23,28 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 			throws Exception {
 		// TODO Auto-generated method stub
 		System.out.println("\n-------- AuthenticationInterceptor.preHandle --- ");
+		System.out.println("\n----------- " + request.getRequestURI());
 		String header = request.getHeader("Authorization");
 		
-		if(request.getRequestURI().contains("authenticateUser")) {
+		
+		if(request.getRequestURI().contains("authenticateUser") || request.getRequestURI().contains(".html") || 
+				request.getRequestURI().contains(".js") || request.getRequestURI().contains(".map") || 
+					request.getRequestURI().contains(".png")) {
 			return true;
 		}
 
-        if (header == null || !header.startsWith("Bearer ")) {
-        	response.getWriter().write("{'Error Message' : 'Invalid User'}");
+      if (header == null || !header.startsWith("Bearer ")) {
+        	response.getWriter().write("{'Error Message' : 'Please login using /index.html'}");
+        //	response.sendRedirect("/index.html");
             return false;
         } else {
         	UserEntity user = repository.findByToken(header.replace("Bearer ", ""));
             if (null == user) {
-            	response.getWriter().write("{'Error Message' : 'Invalid User'}");
+            	response.getWriter().write("{'Error Message' : 'Please login using /index.html'}");
+          //  	response.sendRedirect("/index.html");
                 return false;
             }
-        }
+        } 
         
         
 		return true;
