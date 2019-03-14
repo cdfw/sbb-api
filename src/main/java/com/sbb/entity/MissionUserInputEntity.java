@@ -22,6 +22,8 @@ public class MissionUserInputEntity {
     @JsonIgnore
     private ServiceMatrixEntity serviceMatrixByTaskId;
     private StatusEntity statusBySttsId;
+    private Integer approverId;
+    private UserEntity userByApproverId;
 
     @Id
     @Column(name = "id")
@@ -121,8 +123,21 @@ public class MissionUserInputEntity {
     public void setUserById(UserEntity userById) {
         this.userById = userById;
     }
-
+    
+    
+   // @ManyToOne
+   // @JoinColumn(name = "approver_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     @ManyToOne
+    @JoinColumn(name = "approver_id", referencedColumnName = "id", nullable = true, insertable = false, updatable = false)
+    public UserEntity getUserByApproverId() {
+		return userByApproverId;
+	}
+
+	public void setUserByApproverId(UserEntity userByApproverId) {
+		this.userByApproverId = userByApproverId;
+	}
+
+	@ManyToOne
     @JoinColumn(name = "region_id", referencedColumnName = "region_id", nullable = false, insertable = false, updatable = false)
     public RegionEntity getRegionByRegionId() {
         return regionByRegionId;
@@ -151,4 +166,16 @@ public class MissionUserInputEntity {
     public void setStatusBySttsId(StatusEntity statusBySttsId) {
         this.statusBySttsId = statusBySttsId;
     }
+
+    @Basic
+    @Column(name = "approver_id", nullable=true)
+	public Integer getApproverId() {
+		return approverId;
+	}
+
+	public void setApproverId(Integer approverId) {
+		this.approverId = approverId;
+	}
+    
+    
 }

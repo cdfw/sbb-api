@@ -22,8 +22,6 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		// TODO Auto-generated method stub
-		System.out.println("\n-------- AuthenticationInterceptor.preHandle --- ");
-		System.out.println("\n----------- " + request.getRequestURI());
 		String header = request.getHeader("Authorization");
 		
 		
@@ -34,14 +32,14 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 		}
 
       if (header == null || !header.startsWith("Bearer ")) {
-        	response.getWriter().write("{'Error Message' : 'Please login using /index.html'}");
-        //	response.sendRedirect("/index.html");
+        	//response.getWriter().write("{'Error Message' : 'Please login using /index.html'}");
+        	response.sendRedirect("/index.html");
             return false;
         } else {
         	UserEntity user = repository.findByToken(header.replace("Bearer ", ""));
             if (null == user) {
-            	response.getWriter().write("{'Error Message' : 'Please login using /index.html'}");
-          //  	response.sendRedirect("/index.html");
+            	//response.getWriter().write("{'Error Message' : 'Please login using /index.html'}");
+            	response.sendRedirect("/index.html");
                 return false;
             }
         } 

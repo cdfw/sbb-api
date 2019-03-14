@@ -47,7 +47,6 @@ public class ServiceMatrixController {
     @RequestMapping("/{regionCode}/task/{taskId}")
     public ServiceMatrixEntity fetchTaskInfo(@PathVariable("regionCode")String regionCode, @PathVariable("taskId")String taskId) {
         // repository.
-        System.out.println("Region code is --> "+regionCode + "Task Id is --> "+ taskId);
         ServiceMatrixEntity task =  repository.findById(taskId);
        /* task.setMissionUserInputsByTaskId(task.getMissionUserInputsByTaskId().stream().filter(
                 input -> regionCode.equals(input.getRegionByRegionId().getRegionName())).

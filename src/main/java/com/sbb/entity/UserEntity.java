@@ -27,6 +27,9 @@ public class UserEntity {
     @JsonIgnore
     private Collection<MissionUserInputEntity> missionUserInputsById;
     private Collection<UserRegionMappingEntity> userRegionMappingsById;
+    
+   // @JsonIgnore
+  //  private Collection<MissionUserInputEntity> missionUserInputsByApproverId;
 
     @Id
     @Column(name = "id")
@@ -157,8 +160,18 @@ public class UserEntity {
     public void setMissionUserInputsById(Collection<MissionUserInputEntity> missionUserInputsById) {
         this.missionUserInputsById = missionUserInputsById;
     }
+    
+    
+  /*  @OneToMany(mappedBy = "userByApproverId")
+    public Collection<MissionUserInputEntity> getMissionUserInputsByApproverId() {
+		return missionUserInputsByApproverId;
+	}
 
-    @OneToMany(mappedBy = "userById")
+	public void setMissionUserInputsByApproverId(Collection<MissionUserInputEntity> missionUserInputsByApproverId) {
+		this.missionUserInputsByApproverId = missionUserInputsByApproverId;
+	}
+*/
+	@OneToMany(mappedBy = "userById")
     public Collection<UserRegionMappingEntity> getUserRegionMappingsById() {
         return userRegionMappingsById;
     }

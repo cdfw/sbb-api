@@ -15,7 +15,7 @@ public interface MissionInputRepository extends CrudRepository<MissionUserInputE
 
     @Modifying
     @Transactional
-    @Query("UPDATE MissionUserInputEntity SET sttsId = 'R' WHERE taskId = :taskId and id <> :userId and regionId = :regionId")
+    @Query("UPDATE MissionUserInputEntity SET sttsId = 'R', approverId = null WHERE taskId = :taskId and id <> :userId and regionId = :regionId")
     public void rejectUnselectedInputs( @Param("regionId") int regionId, @Param("taskId") String taskId, @Param("userId") int userId);
 
     //WHERE input.regionByRegionId.regionName = :regionId and input.taskId = :taskId and input.id <> :userId
