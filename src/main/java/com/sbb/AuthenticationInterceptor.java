@@ -25,7 +25,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 		String header = request.getHeader("Authorization");
 		
 		
-		if(request.getRequestURI().contains("authenticateUser") || request.getRequestURI().contains(".html") || 
+		if(request.getRequestURI().contains("authenticateUser") || request.getRequestURI().contains("resetPassword") || request.getRequestURI().contains(".html") || 
 				request.getRequestURI().contains(".js") || request.getRequestURI().contains(".map") || 
 					request.getRequestURI().contains(".png")) {
 			return true;

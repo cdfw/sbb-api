@@ -21,6 +21,16 @@ public class UserController {
         }
         return user;
    }
+    
+    @RequestMapping(path = "/resetPassword", method = RequestMethod.POST)
+    public UserEntity resetPassword(@RequestBody Map<String, String> request) {
+        UserEntity user = repository.findByCredentials(request.get("username"), request.get("password"));
+        if (null != user) {
+        	user.setPassword(request.get("newpassword"));
+        	repository.save(user);
+        }
+        return user;
+   }
 
     @RequestMapping(path = "/logout", method = RequestMethod.POST)
     public void logoutUser(@RequestBody Map<String, Integer> request) {
