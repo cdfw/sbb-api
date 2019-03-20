@@ -33,8 +33,7 @@ public class UserController {
    }
 
     @RequestMapping(path = "/logout", method = RequestMethod.POST)
-    public void logoutUser(@RequestBody Map<String, Integer> request) {
-        System.out.println("Inside logout "+request.get("userId"));
+    public void logoutUser(@RequestBody Map<String, Integer> request) {        
         UserEntity user = repository.findById(request.get("userId")).get();
         user.setUserToken(null);
         repository.save(user);

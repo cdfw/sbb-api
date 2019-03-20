@@ -37,8 +37,7 @@ public class ServiceMatrixController {
     }
 
     @RequestMapping("/service/{regionCode}/{userId}")
-    public List<ServiceMatrixEntity> fetchServiceMatrix(@PathVariable("regionCode")String regionCode, @PathVariable("userId")String userId) {
-        System.out.println(regionCode);
+    public List<ServiceMatrixEntity> fetchServiceMatrix(@PathVariable("regionCode")String regionCode, @PathVariable("userId")String userId) {        
         List<ServiceMatrixEntity> repo = (List<ServiceMatrixEntity>) repository.findAll();
         processMyInput(repo, userId, regionCode);
         return repo;
