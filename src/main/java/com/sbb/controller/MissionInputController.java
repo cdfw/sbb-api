@@ -16,7 +16,6 @@ import java.sql.Timestamp;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 
 @RestController
@@ -80,10 +79,9 @@ public class MissionInputController {
         input.setTaskId((request.get("taskId")));
         input.setInputValue(Integer.parseInt(request.get("inputValue")));
         input.setSttsId(status);
+        input.setFeedback(request.get("feedback"));
         if(AppConstants.STTS_APPROVED.equalsIgnoreCase(status)) {
         	input.setApproverId(Integer.parseInt(request.get("userId")));
-        } else {
-        	
         }
         return  input;
     }
