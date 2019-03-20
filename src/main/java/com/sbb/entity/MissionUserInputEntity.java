@@ -24,6 +24,7 @@ public class MissionUserInputEntity {
     private StatusEntity statusBySttsId;
     private Integer approverId;
     private UserEntity userByApproverId;
+    private String feedback;
 
     @Id
     @Column(name = "id")
@@ -175,6 +176,16 @@ public class MissionUserInputEntity {
 
 	public void setApproverId(Integer approverId) {
 		this.approverId = approverId;
+	}
+
+	@Basic
+	@Column(name="feedback")
+	public String getFeedback() {
+		return feedback;
+	}
+
+	public void setFeedback(String feedback) {
+		this.feedback = feedback;
 	}
     
     

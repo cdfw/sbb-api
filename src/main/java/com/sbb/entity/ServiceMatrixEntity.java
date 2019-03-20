@@ -31,6 +31,8 @@ public class ServiceMatrixEntity {
     private double totalLaborHours;
     private String taskStatus;
     private String inputReceived;
+    private int feedbackCount;
+    private String feedbackReceived;
 
 
     @Id
@@ -188,7 +190,25 @@ public class ServiceMatrixEntity {
         this.inputReceived = inputReceived;
     }
 
-    @PostLoad
+    @Transient
+    public String getFeedbackReceived() {
+		return feedbackReceived;
+	}
+
+	public void setFeedbackReceived(String feedbackReceived) {
+		this.feedbackReceived = feedbackReceived;
+	}
+
+	@Transient
+	public int getFeedbackCount() {
+		return feedbackCount;
+	}
+
+	public void setFeedbackCount(int feedbackCount) {
+		this.feedbackCount = feedbackCount;
+	}
+
+	@PostLoad
     public final void postLoad() {
         this.setTotalLaborHours(getLaborClassesByTaskId().stream().filter(o -> o.getTime() != 0).mapToDouble(o -> o.getTime()).sum());
 
