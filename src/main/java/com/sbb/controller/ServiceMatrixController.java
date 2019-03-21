@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import com.sbb.Greeting;
@@ -105,12 +106,15 @@ public class ServiceMatrixController {
     }
     
     public void setFeedbackCount (ServiceMatrixEntity task, String regionCode) {
-        task.setFeedbackCount(task.getMissionUserInputsByTaskId().stream().filter(
-                input -> input.getFeedback() != null &&  input.getFeedback().trim() != "")
-        		.collect(Collectors.toCollection(LinkedList<MissionUserInputEntity>::new)).size());
-        System.out.println(task.getMissionUserInputsByTaskId().stream().filter(
-                input -> input.getFeedback() != null &&  input.getFeedback().trim() != "")
-        		.collect(Collectors.toCollection(LinkedList<MissionUserInputEntity>::new)).size());
+    	Predicate<MissionUserInputEntity> p = new Predicate<MissionUserInputEntity>() {
+
+			@Override
+			public boolean test(MissionUserInputEntity t) {
+				return t.getFeedback() != null && !t.getFeedback().trim().isEmpty();
+			}
+		};
+        task.setFeedbackCount(task.getMissionUserInputsByTaskId().stream().filter(p)
+        		.collect(Collectors.<MissionUserInputEntity>toList()).size());
         if(task.getFeedbackCount()>0) {
             task.setFeedbackReceived("Yes");
         } else {
