@@ -106,7 +106,10 @@ public class ServiceMatrixController {
     
     public void setFeedbackCount (ServiceMatrixEntity task, String regionCode) {
         task.setFeedbackCount(task.getMissionUserInputsByTaskId().stream().filter(
-                input -> input.getFeedback() != null)
+                input -> input.getFeedback() != null &&  input.getFeedback().trim() != "")
+        		.collect(Collectors.toCollection(LinkedList<MissionUserInputEntity>::new)).size());
+        System.out.println(task.getMissionUserInputsByTaskId().stream().filter(
+                input -> input.getFeedback() != null &&  input.getFeedback().trim() != "")
         		.collect(Collectors.toCollection(LinkedList<MissionUserInputEntity>::new)).size());
         if(task.getFeedbackCount()>0) {
             task.setFeedbackReceived("Yes");
