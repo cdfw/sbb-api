@@ -110,10 +110,13 @@ public class ServiceMatrixController {
 
 			@Override
 			public boolean test(MissionUserInputEntity t) {
-				return t.getFeedback() != null && !t.getFeedback().trim().isEmpty();
+				return t.getFeedback() != null && !t.getFeedback().trim().isEmpty() && regionCode.equals(t.getRegionByRegionId().getRegionName());
 			}
 		};
+		
         task.setFeedbackCount(task.getMissionUserInputsByTaskId().stream().filter(p)
+        		.collect(Collectors.<MissionUserInputEntity>toList()).size());
+        System.out.println(task.getTaskName() +" --> "+task.getMissionUserInputsByTaskId().stream().filter(p)
         		.collect(Collectors.<MissionUserInputEntity>toList()).size());
         if(task.getFeedbackCount()>0) {
             task.setFeedbackReceived("Yes");
