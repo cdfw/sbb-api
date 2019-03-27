@@ -1,6 +1,7 @@
 package com.sbb.controller;
 
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -11,8 +12,12 @@ import java.util.stream.Collectors;
 import com.sbb.Greeting;
 import com.sbb.entity.MissionUserInputEntity;
 import com.sbb.entity.ServiceMatrixEntity;
+import com.sbb.entity.TaskCatalogEntity;
 import com.sbb.helper.AppConstants;
+import com.sbb.repository.MissionInputRepository;
 import com.sbb.repository.ServiceMatrixRepository;
+import com.sbb.repository.TaskCatalogRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,13 +26,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static java.util.stream.Collectors.toList;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 
 @RestController
 public class ServiceMatrixController {
 
     @Autowired
     private ServiceMatrixRepository repository ;
-
+    
+    @Autowired
+    private TaskCatalogRepository taskRepository ;
+    
+    @Autowired
+    private MissionInputRepository missionRepository ;
+	
     private static final String template = "Hello, %s!";
     private final AtomicLong counter = new AtomicLong();
 
@@ -38,9 +52,14 @@ public class ServiceMatrixController {
     }
 
     @RequestMapping("/service/{regionCode}/{userId}")
-    public List<ServiceMatrixEntity> fetchServiceMatrix(@PathVariable("regionCode")String regionCode, @PathVariable("userId")String userId) {        
-        List<ServiceMatrixEntity> repo = (List<ServiceMatrixEntity>) repository.findAll();
-        processMyInput(repo, userId, regionCode);
+    public List<TaskCatalogEntity> fetchServiceMatrix(@PathVariable("regionCode")String regionCode, @PathVariable("userId")String userId) {  
+    	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+    	System.out.println("Fetching service matrix --> "+ dtf.format(LocalDateTime.now()));
+        List<TaskCatalogEntity> repo = (List<TaskCatalogEntity>) taskRepository.findAll();
+        List<MissionUserInputEntity> inputRepo = (List<MissionUserInputEntity>)missionRepository.findAll();
+        System.out.println("Processing service matrix --> "+ dtf.format(LocalDateTime.now()));
+        processMyInput(repo, inputRepo, userId, regionCode);
+        System.out.println("Done with service matrix --> "+ dtf.format(LocalDateTime.now()));
         return repo;
     }
 
@@ -58,21 +77,72 @@ public class ServiceMatrixController {
     }
 
 
-    public void processMyInput(List<ServiceMatrixEntity> repo, String userId, String regionCode) {
+    public void processMyInput(List<TaskCatalogEntity> repo, List<MissionUserInputEntity> inputRepo, String userId, String regionCode) {
+    	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
         MissionUserInputEntity myInput = null;
         List<MissionUserInputEntity> allInputs = null;
-        for(ServiceMatrixEntity task : repo) {
-            myInput = task.getMissionUserInputsByTaskId().stream().filter(
+        for(TaskCatalogEntity task : repo) {
+      	int inputCount = 0;
+        	int myInputCount = 0;
+        	int feedbackCount = 0;
+        	List <MissionUserInputEntity> regionInputs  = new ArrayList<MissionUserInputEntity>();
+        	for(MissionUserInputEntity input :inputRepo) {           		
+        		if (regionCode.equals(input.getRegionByRegionId().getRegionName()) && task.getTaskId().equals(input.getTaskId())) {
+        			regionInputs.add(input);
+        			inputCount++;
+        			if(input.getFeedback() != null && !input.getFeedback().trim().isEmpty()) {
+        				feedbackCount++;
+        			}
+        			if(Integer.parseInt(userId) == (input.getId())) {
+        				myInputCount++;
+        			}        			
+        		}     		       		        		        		
+        	}
+        	if(myInputCount>0) {
+        		task.setMyInput("Yes");
+        	}  else {
+        		task.setMyInput("No");
+        	}    	  
+        	if(inputCount > 0) {
+        		task.setInputCount(inputCount);
+        		task.setInputReceived("Yes");
+        	} else {
+        		task.setInputReceived("No");
+        	}
+        	
+            if(feedbackCount>0) {
+            	task.setFeedbackCount(feedbackCount);
+                task.setFeedbackReceived("Yes");
+            } else {
+                task.setFeedbackReceived("No");
+            }      	
+            
+            if(regionInputs.size() == 0 ) {
+                task.setTaskStatus("Not started");
+            } else {
+                task.setTaskStatus("Pending");
+                for (MissionUserInputEntity input : regionInputs) {
+                    if(task.getTaskId().equals(input.getTaskId()) && AppConstants.STTS_APPROVED.equals(input.getSttsId())) {
+                        task.setTaskStatus("Validated");
+                        break;
+                    }
+                }
+            }         
+        	
+          /*  myInput = task.getMissionUserInputsByTaskId().stream().filter(
                     input -> Integer.parseInt(userId) == (input.getId()) && regionCode.equals(input.getRegionByRegionId().getRegionName())).
                     findAny().orElse(null);
             if(null != myInput) {
                 task.setMyInput("Yes");
             } else {
                 task.setMyInput("No");
-            }
+            } 
+            System.out.println("Setting Input Count --> "+ dtf.format(LocalDateTime.now()));
             setInputCount(task, regionCode);
+            System.out.println("Setting Status --> "+ dtf.format(LocalDateTime.now()));
             setTaskStatus(task,regionCode);
-            setFeedbackCount(task, regionCode);
+            System.out.println("Setting feedback count --> "+ dtf.format(LocalDateTime.now()));
+            setFeedbackCount(task, regionCode);*/
         }
     }
 
@@ -115,13 +185,11 @@ public class ServiceMatrixController {
 		};
 		
         task.setFeedbackCount(task.getMissionUserInputsByTaskId().stream().filter(p)
-        		.collect(Collectors.<MissionUserInputEntity>toList()).size());
-        System.out.println(task.getTaskName() +" --> "+task.getMissionUserInputsByTaskId().stream().filter(p)
-        		.collect(Collectors.<MissionUserInputEntity>toList()).size());
+        		.collect(Collectors.<MissionUserInputEntity>toList()).size());        
         if(task.getFeedbackCount()>0) {
             task.setFeedbackReceived("Yes");
         } else {
             task.setFeedbackReceived("No");
         }
-    }
+    }   
 }

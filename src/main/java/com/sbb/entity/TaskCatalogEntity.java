@@ -1,20 +1,16 @@
 package com.sbb.entity;
 
 import com.sbb.helper.AppConstants;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Formula;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Objects;
 
 @Entity
 @Table(name = "service_matrix", schema = "cdfw_sbb_d")
-public class ServiceMatrixEntity {
+public class TaskCatalogEntity {
     private String taskId;
     private String serviceName;
     private String program;
@@ -27,17 +23,12 @@ public class ServiceMatrixEntity {
     private String addtnlBudgetFator;
     private Integer frequency;
     private StatusEntity statusBySttsId;
-    private Collection<JrsdctnCtgryEntity> jrsdctnCtgriesByTaskId;
-    private Collection<LaborClassEntity> laborClassesByTaskId;
-    private Collection<MissionUserInputEntity> missionUserInputsByTaskId;
     private int inputCount;
     private String myInput;
-    private double totalLaborHours;
     private String taskStatus;
     private String inputReceived;
     private int feedbackCount;
     private String feedbackReceived;
-
 
     @Id
     @Column(name = "TASK_ID")
@@ -167,15 +158,7 @@ public class ServiceMatrixEntity {
         this.myInput = myInput;
     }
 
-    @Transient
-    public double getTotalLaborHours() {
-        return totalLaborHours;
-    }
-
-    public void setTotalLaborHours(double totalLaborHours) {
-        this.totalLaborHours = totalLaborHours;
-    }
-
+ 
     @Transient
     public String getTaskStatus() {
         return taskStatus;
@@ -214,28 +197,14 @@ public class ServiceMatrixEntity {
 
 	@PostLoad
     public final void postLoad() {
-        this.setTotalLaborHours(getLaborClassesByTaskId().stream().filter(o -> o.getTime() != 0).mapToDouble(o -> o.getTime()).sum());
-
-       /* if(getMissionUserInputsByTaskId().size() == 0 ) {
-            this.setTaskStatus("Not started");
-        } else {
-            this.setTaskStatus("Pending");
-            Iterator inputs = getMissionUserInputsByTaskId().iterator();
-            while(inputs.hasNext()) {
-                MissionUserInputEntity input = (MissionUserInputEntity) inputs.next();
-                if(AppConstants.STTS_APPROVED.equals(input.getSttsId())) {
-                    this.setTaskStatus("Validated");
-                    break;
-                }
-            }
-        }*/
+        
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ServiceMatrixEntity that = (ServiceMatrixEntity) o;
+        TaskCatalogEntity that = (TaskCatalogEntity) o;
         return Objects.equals(taskId, that.taskId) &&
                 Objects.equals(serviceName, that.serviceName) &&
                 Objects.equals(program, that.program) &&
@@ -263,32 +232,5 @@ public class ServiceMatrixEntity {
 
     public void setStatusBySttsId(StatusEntity statusBySttsId) {
         this.statusBySttsId = statusBySttsId;
-    }
-
-    @OneToMany(mappedBy = "serviceMatrixByTaskId")    
-    public Collection<JrsdctnCtgryEntity> getJrsdctnCtgriesByTaskId() {
-        return jrsdctnCtgriesByTaskId;
-    }
-
-    public void setJrsdctnCtgriesByTaskId(Collection<JrsdctnCtgryEntity> jrsdctnCtgriesByTaskId) {
-        this.jrsdctnCtgriesByTaskId = jrsdctnCtgriesByTaskId;
-    }
-
-    @OneToMany(mappedBy = "serviceMatrixByTaskId")        
-    public Collection<LaborClassEntity> getLaborClassesByTaskId() {
-        return laborClassesByTaskId;
-    }
-
-    public void setLaborClassesByTaskId(Collection<LaborClassEntity> laborClassesByTaskId) {
-        this.laborClassesByTaskId = laborClassesByTaskId;
-    }
-
-    @OneToMany(mappedBy = "serviceMatrixByTaskId")
-    public Collection<MissionUserInputEntity> getMissionUserInputsByTaskId() {
-        return missionUserInputsByTaskId;
-    }
-
-    public void setMissionUserInputsByTaskId(Collection<MissionUserInputEntity> missionUserInputsByTaskId) {
-        this.missionUserInputsByTaskId = missionUserInputsByTaskId;
     }
 }
