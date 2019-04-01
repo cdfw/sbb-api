@@ -29,6 +29,7 @@ public class TaskCatalogEntity {
     private String inputReceived;
     private int feedbackCount;
     private String feedbackReceived;
+    private String serviceGlossary;
 
     @Id
     @Column(name = "TASK_ID")
@@ -100,6 +101,16 @@ public class TaskCatalogEntity {
         this.taskDesc = taskDesc;
     }
 
+    @Basic
+    @Column(name = "service_glossary")
+    public String getServiceGlossary() {
+        return serviceGlossary;
+    }
+
+    public void setServiceGlossary(String serviceGlossary) {
+        this.serviceGlossary = serviceGlossary;
+    }
+    
     @Basic
     @Column(name = "MULT_DESC")
     public String getMultDesc() {

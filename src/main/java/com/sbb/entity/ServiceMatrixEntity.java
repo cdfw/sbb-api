@@ -37,6 +37,7 @@ public class ServiceMatrixEntity {
     private String inputReceived;
     private int feedbackCount;
     private String feedbackReceived;
+    private String serviceGlossary;
 
 
     @Id
@@ -107,6 +108,16 @@ public class ServiceMatrixEntity {
 
     public void setTaskDesc(String taskDesc) {
         this.taskDesc = taskDesc;
+    }    
+
+    @Basic
+    @Column(name = "service_glossary")
+    public String getServiceGlossary() {
+        return serviceGlossary;
+    }
+
+    public void setServiceGlossary(String serviceGlossary) {
+        this.serviceGlossary = serviceGlossary;
     }
 
     @Basic
@@ -243,6 +254,7 @@ public class ServiceMatrixEntity {
                 Objects.equals(taskCategory, that.taskCategory) &&
                 Objects.equals(taskName, that.taskName) &&
                 Objects.equals(taskDesc, that.taskDesc) &&
+                Objects.equals(serviceGlossary, that.serviceGlossary) &&
                 Objects.equals(multDesc, that.multDesc) &&
                 Objects.equals(frequency, that.frequency) &&
                 Objects.equals(desiredPerf, that.desiredPerf) &&
@@ -251,7 +263,7 @@ public class ServiceMatrixEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(taskId, serviceName, program, subProgram, taskCategory, taskName, taskDesc, multDesc, frequency,
+        return Objects.hash(taskId, serviceName, program, subProgram, taskCategory, taskName, taskDesc, serviceGlossary, multDesc, frequency,
                 desiredPerf, addtnlBudgetFator );
     }
 
