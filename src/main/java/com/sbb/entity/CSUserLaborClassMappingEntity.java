@@ -11,10 +11,12 @@ public class CSUserLaborClassMappingEntity {
 	
     private int userId;
     private int laborClassId;
+    private int regionId;
     
     @JsonIgnore
     private UserEntity userById;
-    private CSLaborClassLkupEntity csLaborClassbyLaborClassId;
+    private CSLaborClassLkupEntity laborClass;
+    private RegionEntity region;
 
     @Id
     @Column(name = "USER_ID")
@@ -36,6 +38,15 @@ public class CSUserLaborClassMappingEntity {
         this.laborClassId = laborClassId;
     }
 
+    @Id
+    @Column(name = "REGION_ID")
+	public int getRegionId() {
+		return regionId;
+	}
+
+	public void setRegionId(int regionId) {
+		this.regionId = regionId;
+	}
 
 	@ManyToOne
     @JoinColumn(name = "userId", referencedColumnName = "id", nullable = false, updatable = false, insertable = false)
@@ -49,11 +60,21 @@ public class CSUserLaborClassMappingEntity {
 
     @ManyToOne
     @JoinColumn(name = "laborClassId", referencedColumnName = "ID", nullable = false, updatable = false, insertable = false)
-    public CSLaborClassLkupEntity getCsLaborClassbyLaborClassId() {
-        return csLaborClassbyLaborClassId;
+    public CSLaborClassLkupEntity getLaborClass() {
+        return laborClass;
     }
 
-    public void setCsLaborClassbyLaborClassId(CSLaborClassLkupEntity csLaborClassbyLaborClassId) {
-        this.csLaborClassbyLaborClassId = csLaborClassbyLaborClassId;
+    public void setLaborClass(CSLaborClassLkupEntity laborClass) {
+        this.laborClass = laborClass;
     }
+
+    @ManyToOne
+    @JoinColumn(name = "regionId", referencedColumnName = "region_id", nullable = false, updatable = false, insertable = false)
+	public RegionEntity getRegion() {
+		return region;
+	}
+
+	public void setRegion(RegionEntity region) {
+		this.region = region;
+	}
 }

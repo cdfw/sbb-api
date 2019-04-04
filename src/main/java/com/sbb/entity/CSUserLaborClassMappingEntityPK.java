@@ -14,6 +14,10 @@ public class CSUserLaborClassMappingEntityPK implements Serializable{
 	@Id
 	@Column(name="LABOR_CLASS_ID")
     private int laborClassId;
+	
+	@Id
+	@Column(name="REGION_ID")
+	private int regionId;
     
 	public int getUserId() {
 		return userId;
@@ -27,11 +31,18 @@ public class CSUserLaborClassMappingEntityPK implements Serializable{
 	public void setLaborClassId(int laborClassId) {
 		this.laborClassId = laborClassId;
 	}
+	public int getRegionId() {
+		return regionId;
+	}
+	public void setRegionId(int regionId) {
+		this.regionId = regionId;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + laborClassId;
+		result = prime * result + regionId;
 		result = prime * result + userId;
 		return result;
 	}
@@ -46,8 +57,11 @@ public class CSUserLaborClassMappingEntityPK implements Serializable{
 		CSUserLaborClassMappingEntityPK other = (CSUserLaborClassMappingEntityPK) obj;
 		if (laborClassId != other.laborClassId)
 			return false;
+		if (regionId != other.regionId)
+			return false;
 		if (userId != other.userId)
 			return false;
 		return true;
 	}
+	
 }
