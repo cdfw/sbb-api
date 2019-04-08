@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -28,7 +27,7 @@ public class UserEntity {
     @JsonIgnore
     private Collection<MissionUserInputEntity> missionUserInputsById;
     private Collection<UserRegionMappingEntity> userRegionMappingsById;
-    private Collection<CSUserLaborClassMappingEntity> laborClassMappingsById;
+//    private Collection<CSUserLaborClassMappingEntity> laborClassMappingsById;
     
    // @JsonIgnore
   //  private Collection<MissionUserInputEntity> missionUserInputsByApproverId;
@@ -163,14 +162,14 @@ public class UserEntity {
         this.missionUserInputsById = missionUserInputsById;
     }
     
-    @OneToMany(mappedBy = "userById")
-	public Collection<CSUserLaborClassMappingEntity> getLaborClassMappingsById() {
-		return laborClassMappingsById;
-	}
-
-	public void setLaborClassMappingsById(Collection<CSUserLaborClassMappingEntity> laborClassMappingsById) {
-		this.laborClassMappingsById = laborClassMappingsById;
-	}
+//    @OneToMany(mappedBy = "userById")
+//	public Collection<CSUserLaborClassMappingEntity> getLaborClassMappingsById() {
+//		return laborClassMappingsById;
+//	}
+//
+//	public void setLaborClassMappingsById(Collection<CSUserLaborClassMappingEntity> laborClassMappingsById) {
+//		this.laborClassMappingsById = laborClassMappingsById;
+//	}
 
 	/*  @OneToMany(mappedBy = "userByApproverId")
     public Collection<MissionUserInputEntity> getMissionUserInputsByApproverId() {
