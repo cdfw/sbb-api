@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sbb.entity.CSUserLaborClassInputEntity;
 import com.sbb.entity.CSUserLaborClassMappingEntity;
 import com.sbb.entity.TaskCatalogEntity;
+import com.sbb.repository.CSUserLaborClassInputRepository;
 import com.sbb.repository.CurrentStateRepository;
 import com.sbb.repository.MissionInputRepository;
 import com.sbb.repository.ServiceMatrixRepository;
@@ -33,6 +35,9 @@ public class CurrentStateController {
     
     @Autowired
     private CurrentStateRepository currentStateRepository;
+    
+    @Autowired
+    private CSUserLaborClassInputRepository csUserLaborClassInputRepository;
 	
     private static final String template = "Hello, %s!";
     private final AtomicLong counter = new AtomicLong();
@@ -43,6 +48,15 @@ public class CurrentStateController {
     	System.out.println("Fetching Labor Classes --> "+ dtf.format(LocalDateTime.now()));
         List<CSUserLaborClassMappingEntity> repo = (List<CSUserLaborClassMappingEntity>) currentStateRepository.findAllByIdAndRegionId(userId, regionCode);
         System.out.println("Done with Labor Classes --> "+ dtf.format(LocalDateTime.now()));
+        return repo;
+    }
+    
+    @RequestMapping("/csservice/laborclasssummary/{regionCode}/{userId}/{laborClass}")
+    public List<CSUserLaborClassInputEntity> fetchLaborClassHoursSummary(@PathVariable("regionCode")int regionCode, @PathVariable("userId")int userId, @PathVariable("laborClass")String laborClass) {  
+    	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+    	System.out.println("Fetching Labor Class Summary --> "+ dtf.format(LocalDateTime.now()));
+        List<CSUserLaborClassInputEntity> repo = (List<CSUserLaborClassInputEntity>) csUserLaborClassInputRepository.findAllByIdAndRegionIdAndLaborClass(userId, regionCode, laborClass);
+        System.out.println("Done with Labor Class Summary --> "+ dtf.format(LocalDateTime.now()));
         return repo;
     }
    
