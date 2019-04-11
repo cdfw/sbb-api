@@ -5,47 +5,54 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Id;
 
-public class CSUserLaborClassMappingEntityPK implements Serializable{
+public class CSUserLaborClassMappingEntityPK implements Serializable {
 
 	@Id
-	@Column(name="USER_ID")
+	@Column(name = "USER_ID")
 	private int userId;
-	
+
 	@Id
-	@Column(name="REGION_ID")
+	@Column(name = "REGION_ID")
 	private int regionId;
-	
+
 	@Id
-	@Column(name="LABOR_CLASS_NAME")
-	private String laborClassName;
-    
+	@Column(name = "POSITION_ID")
+	private String positionId;
+
 	public int getUserId() {
 		return userId;
 	}
+
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
+
 	public int getRegionId() {
 		return regionId;
 	}
+
 	public void setRegionId(int regionId) {
 		this.regionId = regionId;
 	}
-	public String getLaborClassName() {
-		return laborClassName;
+
+	public String getPositionId() {
+		return positionId;
 	}
-	public void setLaborClassName(String laborClassName) {
-		this.laborClassName = laborClassName;
+
+	public void setPositionId(String positionId) {
+		this.positionId = positionId;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((laborClassName == null) ? 0 : laborClassName.hashCode());
+		result = prime * result + ((positionId == null) ? 0 : positionId.hashCode());
 		result = prime * result + regionId;
 		result = prime * result + userId;
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -55,10 +62,10 @@ public class CSUserLaborClassMappingEntityPK implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		CSUserLaborClassMappingEntityPK other = (CSUserLaborClassMappingEntityPK) obj;
-		if (laborClassName == null) {
-			if (other.laborClassName != null)
+		if (positionId == null) {
+			if (other.positionId != null)
 				return false;
-		} else if (!laborClassName.equals(other.laborClassName))
+		} else if (!positionId.equals(other.positionId))
 			return false;
 		if (regionId != other.regionId)
 			return false;
@@ -66,5 +73,5 @@ public class CSUserLaborClassMappingEntityPK implements Serializable{
 			return false;
 		return true;
 	}
-	
+
 }

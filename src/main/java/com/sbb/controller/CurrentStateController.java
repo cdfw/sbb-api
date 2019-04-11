@@ -51,11 +51,11 @@ public class CurrentStateController {
         return repo;
     }
     
-    @RequestMapping("/csservice/laborclasssummary/{regionCode}/{userId}/{laborClass}")
-    public List<CSUserLaborClassInputEntity> fetchLaborClassHoursSummary(@PathVariable("regionCode")int regionCode, @PathVariable("userId")int userId, @PathVariable("laborClass")String laborClass) {  
+    @RequestMapping("/csservice/laborclasssummary/{regionCode}/{userId}/{positionId}")
+    public List<CSUserLaborClassInputEntity> fetchLaborClassHoursSummary(@PathVariable("regionCode")int regionCode, @PathVariable("userId")int userId, @PathVariable("positionId")String positionId) {  
     	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
     	System.out.println("Fetching Labor Class Summary --> "+ dtf.format(LocalDateTime.now()));
-        List<CSUserLaborClassInputEntity> repo = (List<CSUserLaborClassInputEntity>) csUserLaborClassInputRepository.findAllByIdAndRegionIdAndLaborClass(userId, regionCode, laborClass);
+        List<CSUserLaborClassInputEntity> repo = (List<CSUserLaborClassInputEntity>) csUserLaborClassInputRepository.findAllByIdAndRegionIdAndLaborClass(userId, regionCode, positionId);
         System.out.println("Done with Labor Class Summary --> "+ dtf.format(LocalDateTime.now()));
         return repo;
     }

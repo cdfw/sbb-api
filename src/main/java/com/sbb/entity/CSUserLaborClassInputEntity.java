@@ -31,11 +31,11 @@ public class CSUserLaborClassInputEntity {
     @Column(name = "TASK_ID")
 	private String taskId;
 	
-	@Id
+	@Basic
 	@Column(name = "LABOR_CLASS_NAME")
 	private String laborClassName;
 	
-	@Basic
+	@Id
 	@Column(name = "POSITION_ID")
 	private String positionId;
 	

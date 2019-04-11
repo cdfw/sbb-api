@@ -59,7 +59,7 @@ public class CSUserLaborClassMappingEntity {
 		this.region = region;
 	}
 
-	@Id
+	@Basic
 	@Column(name = "LABOR_CLASS_NAME")
 	public String getLaborClassName() {
 		return laborClassName;
@@ -69,7 +69,7 @@ public class CSUserLaborClassMappingEntity {
 		this.laborClassName = laborClassName;
 	}
 
-	@Basic
+	@Id
 	@Column(name = "POSITION_ID")
 	public String getPositionId() {
 		return positionId;

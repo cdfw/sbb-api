@@ -20,8 +20,8 @@ public class CSUserLaborClassInputEntityPK  implements Serializable{
 	private String taskId;
 	
 	@Id
-	@Column(name="LABOR_CLASS_NAME")
-	private String laborClassName;
+	@Column(name="POSITION_ID")
+	private String positionId;
 
 	public int getUserId() {
 		return userId;
@@ -47,19 +47,19 @@ public class CSUserLaborClassInputEntityPK  implements Serializable{
 		this.taskId = taskId;
 	}
 
-	public String getLaborClassName() {
-		return laborClassName;
+	public String getPositionId() {
+		return positionId;
 	}
 
-	public void setLaborClassName(String laborClassName) {
-		this.laborClassName = laborClassName;
+	public void setPositionId(String positionId) {
+		this.positionId = positionId;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((laborClassName == null) ? 0 : laborClassName.hashCode());
+		result = prime * result + ((positionId == null) ? 0 : positionId.hashCode());
 		result = prime * result + regionId;
 		result = prime * result + ((taskId == null) ? 0 : taskId.hashCode());
 		result = prime * result + userId;
@@ -75,10 +75,10 @@ public class CSUserLaborClassInputEntityPK  implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		CSUserLaborClassInputEntityPK other = (CSUserLaborClassInputEntityPK) obj;
-		if (laborClassName == null) {
-			if (other.laborClassName != null)
+		if (positionId == null) {
+			if (other.positionId != null)
 				return false;
-		} else if (!laborClassName.equals(other.laborClassName))
+		} else if (!positionId.equals(other.positionId))
 			return false;
 		if (regionId != other.regionId)
 			return false;
