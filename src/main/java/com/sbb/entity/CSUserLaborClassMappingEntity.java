@@ -1,23 +1,32 @@
 package com.sbb.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.Objects;
 
 @Entity
-@Table(name = "CS_USER_LABOR_CLASS_MAPPING")
+@Table(name = "cs_user_labor_class_mapping", schema = "cdfwdev", catalog = "")
 @IdClass(CSUserLaborClassMappingEntityPK.class)
 public class CSUserLaborClassMappingEntity {
-	
-    private int userId;
     private int regionId;
-    private String laborClassName;
+    private int userId;
     private String positionId;
-    private double hours;
-    
-    @JsonIgnore
-    private UserEntity userById;
-    private RegionEntity region;
+    private String laborClassName;
+    private BigDecimal hours;
+    private Collection<CSUserLaborClassInputEntity> csUserLaborClassInputs;
+    private RegionEntity regionByRegionId;
+    private UserEntity userByUserId;
+
+    @Id
+    @Column(name = "REGION_ID")
+    public int getRegionId() {
+        return regionId;
+    }
+
+    public void setRegionId(int regionId) {
+        this.regionId = regionId;
+    }
 
     @Id
     @Column(name = "USER_ID")
@@ -30,104 +39,79 @@ public class CSUserLaborClassMappingEntity {
     }
 
     @Id
-    @Column(name = "REGION_ID")
-	public int getRegionId() {
-		return regionId;
-	}
-
-	public void setRegionId(int regionId) {
-		this.regionId = regionId;
-	}
-
-	@ManyToOne
-    @JoinColumn(name = "userId", referencedColumnName = "id", nullable = false, updatable = false, insertable = false)
-    public UserEntity getUserById() {
-        return userById;
+    @Column(name = "POSITION_ID")
+    public String getPositionId() {
+        return positionId;
     }
 
-    public void setUserById(UserEntity userById) {
-        this.userById = userById;
+    public void setPositionId(String positionId) {
+        this.positionId = positionId;
+    }
+
+    @Basic
+    @Column(name = "LABOR_CLASS_NAME")
+    public String getLaborClassName() {
+        return laborClassName;
+    }
+
+    public void setLaborClassName(String laborClassName) {
+        this.laborClassName = laborClassName;
+    }
+
+    @Basic
+    @Column(name = "HOURS")
+    public BigDecimal getHours() {
+        return hours;
+    }
+
+    public void setHours(BigDecimal hours) {
+        this.hours = hours;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CSUserLaborClassMappingEntity that = (CSUserLaborClassMappingEntity) o;
+        return regionId == that.regionId &&
+                userId == that.userId &&
+                Objects.equals(positionId, that.positionId) &&
+                Objects.equals(laborClassName, that.laborClassName) &&
+                Objects.equals(hours, that.hours);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(regionId, userId, positionId, laborClassName, hours);
+    }
+
+    @OneToMany(mappedBy = "csUserLaborClassMapping")
+    public Collection<CSUserLaborClassInputEntity> getCsUserLaborClassInputs() {
+        return csUserLaborClassInputs;
+    }
+
+    public void setCsUserLaborClassInputs(Collection<CSUserLaborClassInputEntity> csUserLaborClassInputs) {
+        this.csUserLaborClassInputs = csUserLaborClassInputs;
     }
 
     @ManyToOne
-    @JoinColumn(name = "regionId", referencedColumnName = "region_id", nullable = false, updatable = false, insertable = false)
-	public RegionEntity getRegion() {
-		return region;
-	}
+    @JoinColumn(name = "REGION_ID", referencedColumnName = "region_id", nullable = false, updatable = false, insertable = false)
+    public RegionEntity getRegionByRegionId() {
+        return regionByRegionId;
+    }
 
-	public void setRegion(RegionEntity region) {
-		this.region = region;
-	}
+    public void setRegionByRegionId(RegionEntity regionByRegionId) {
+        this.regionByRegionId = regionByRegionId;
+    }
 
-	@Basic
-	@Column(name = "LABOR_CLASS_NAME")
-	public String getLaborClassName() {
-		return laborClassName;
-	}
+    @ManyToOne
+    @JoinColumn(name = "USER_ID", referencedColumnName = "id", nullable = false, updatable = false, insertable = false)
+    public UserEntity getUserByUserId() {
+        return userByUserId;
+    }
 
-	public void setLaborClassName(String laborClassName) {
-		this.laborClassName = laborClassName;
-	}
-
-	@Id
-	@Column(name = "POSITION_ID")
-	public String getPositionId() {
-		return positionId;
-	}
-
-	public void setPositionId(String positionId) {
-		this.positionId = positionId;
-	}
-
-	@Basic
-	@Column(name = "HOURS")
-	public double getHours() {
-		return hours;
-	}
-
-	public void setHours(double hours) {
-		this.hours = hours;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		long temp;
-		temp = Double.doubleToLongBits(hours);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + ((laborClassName == null) ? 0 : laborClassName.hashCode());
-		result = prime * result + ((positionId == null) ? 0 : positionId.hashCode());
-		result = prime * result + regionId;
-		result = prime * result + userId;
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		CSUserLaborClassMappingEntity other = (CSUserLaborClassMappingEntity) obj;
-		if (Double.doubleToLongBits(hours) != Double.doubleToLongBits(other.hours))
-			return false;
-		if (laborClassName == null) {
-			if (other.laborClassName != null)
-				return false;
-		} else if (!laborClassName.equals(other.laborClassName))
-			return false;
-		if (positionId == null) {
-			if (other.positionId != null)
-				return false;
-		} else if (!positionId.equals(other.positionId))
-			return false;
-		if (regionId != other.regionId)
-			return false;
-		if (userId != other.userId)
-			return false;
-		return true;
-	}
+    public void setUserByUserId(UserEntity userByUserId) {
+        this.userByUserId = userByUserId;
+    }
 }
+

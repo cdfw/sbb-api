@@ -1,95 +1,71 @@
 package com.sbb.entity;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Id;
+import java.io.Serializable;
+import java.util.Objects;
 
 public class CSUserLaborClassInputEntityPK  implements Serializable{
 
-	@Id
-	@Column(name="USER_ID")
-	private int userId;
-	
-	@Id
-	@Column(name="REGION_ID")
 	private int regionId;
-	
-	@Id
-	@Column(name="TASK_ID")
-	private String taskId;
-	
-	@Id
-	@Column(name="POSITION_ID")
-	private String positionId;
+    private int userId;
+    private String positionId;
+    private String taskId;
 
-	public int getUserId() {
-		return userId;
-	}
+    @Column(name = "REGION_ID")
+    @Id
+    public int getRegionId() {
+        return regionId;
+    }
 
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
+    public void setRegionId(int regionId) {
+        this.regionId = regionId;
+    }
 
-	public int getRegionId() {
-		return regionId;
-	}
+    @Column(name = "USER_ID")
+    @Id
+    public int getUserId() {
+        return userId;
+    }
 
-	public void setRegionId(int regionId) {
-		this.regionId = regionId;
-	}
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
-	public String getTaskId() {
-		return taskId;
-	}
+    @Column(name = "POSITION_ID")
+    @Id
+    public String getPositionId() {
+        return positionId;
+    }
 
-	public void setTaskId(String taskId) {
-		this.taskId = taskId;
-	}
+    public void setPositionId(String positionId) {
+        this.positionId = positionId;
+    }
 
-	public String getPositionId() {
-		return positionId;
-	}
+    @Column(name = "TASK_ID")
+    @Id
+    public String getTaskId() {
+        return taskId;
+    }
 
-	public void setPositionId(String positionId) {
-		this.positionId = positionId;
-	}
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((positionId == null) ? 0 : positionId.hashCode());
-		result = prime * result + regionId;
-		result = prime * result + ((taskId == null) ? 0 : taskId.hashCode());
-		result = prime * result + userId;
-		return result;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CSUserLaborClassInputEntityPK that = (CSUserLaborClassInputEntityPK) o;
+        return regionId == that.regionId &&
+                userId == that.userId &&
+                Objects.equals(positionId, that.positionId) &&
+                Objects.equals(taskId, that.taskId);
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		CSUserLaborClassInputEntityPK other = (CSUserLaborClassInputEntityPK) obj;
-		if (positionId == null) {
-			if (other.positionId != null)
-				return false;
-		} else if (!positionId.equals(other.positionId))
-			return false;
-		if (regionId != other.regionId)
-			return false;
-		if (taskId == null) {
-			if (other.taskId != null)
-				return false;
-		} else if (!taskId.equals(other.taskId))
-			return false;
-		if (userId != other.userId)
-			return false;
-		return true;
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(regionId, userId, positionId, taskId);
+    }
 
 }
