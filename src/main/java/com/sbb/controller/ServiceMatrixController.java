@@ -11,10 +11,12 @@ import java.util.stream.Collectors;
 
 import com.sbb.Greeting;
 import com.sbb.entity.MissionUserInputEntity;
+import com.sbb.entity.MissionUserInputEntityForMatrix;
 import com.sbb.entity.ServiceMatrixEntity;
 import com.sbb.entity.TaskCatalogEntity;
 import com.sbb.helper.AppConstants;
 import com.sbb.repository.MissionInputRepository;
+import com.sbb.repository.MissionInputRepositoryForMatrixRepository;
 import com.sbb.repository.ServiceMatrixRepository;
 import com.sbb.repository.TaskCatalogRepository;
 
@@ -39,8 +41,11 @@ public class ServiceMatrixController {
     @Autowired
     private TaskCatalogRepository taskRepository ;
     
+//    @Autowired
+//    private MissionInputRepository missionRepository ;
+    
     @Autowired
-    private MissionInputRepository missionRepository ;
+    private MissionInputRepositoryForMatrixRepository missionRepositoryMatrix;
 	
     private static final String template = "Hello, %s!";
     private final AtomicLong counter = new AtomicLong();
@@ -51,14 +56,14 @@ public class ServiceMatrixController {
                 String.format(template, name));
     }
 
-    @RequestMapping("/service/{regionCode}/{userId}")
-    public List<TaskCatalogEntity> fetchServiceMatrix(@PathVariable("regionCode")String regionCode, @PathVariable("userId")String userId) {  
+    @RequestMapping("/service/{regionId}/{userId}")
+    public List<TaskCatalogEntity> fetchServiceMatrix(@PathVariable("regionId")int regionId, @PathVariable("userId")String userId) {  
     	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
     	System.out.println("Fetching service matrix --> "+ dtf.format(LocalDateTime.now()));
         List<TaskCatalogEntity> repo = (List<TaskCatalogEntity>) taskRepository.findAll();
-        List<MissionUserInputEntity> inputRepo = (List<MissionUserInputEntity>)missionRepository.findAll();
+        List<MissionUserInputEntityForMatrix> inputRepo = (List<MissionUserInputEntityForMatrix>)missionRepositoryMatrix.findAll();
         System.out.println("Processing service matrix --> "+ dtf.format(LocalDateTime.now()));
-        processMyInput(repo, inputRepo, userId, regionCode);
+        processMyInput(repo, inputRepo, userId, regionId);
         System.out.println("Done with service matrix --> "+ dtf.format(LocalDateTime.now()));
         return repo;
     }
@@ -77,17 +82,17 @@ public class ServiceMatrixController {
     }
 
 
-    public void processMyInput(List<TaskCatalogEntity> repo, List<MissionUserInputEntity> inputRepo, String userId, String regionCode) {
-    	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
-        MissionUserInputEntity myInput = null;
-        List<MissionUserInputEntity> allInputs = null;
+    public void processMyInput(List<TaskCatalogEntity> repo, List<MissionUserInputEntityForMatrix> inputRepo, String userId, int regionId) {
+//    	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+//        MissionUserInputEntity myInput = null;
+//        List<MissionUserInputEntity> allInputs = null;
         for(TaskCatalogEntity task : repo) {
       	int inputCount = 0;
         	int myInputCount = 0;
         	int feedbackCount = 0;
-        	List <MissionUserInputEntity> regionInputs  = new ArrayList<MissionUserInputEntity>();
-        	for(MissionUserInputEntity input :inputRepo) {           		
-        		if (regionCode.equals(input.getRegionByRegionId().getRegionName()) && task.getTaskId().equals(input.getTaskId())) {
+        	List <MissionUserInputEntityForMatrix> regionInputs  = new ArrayList<MissionUserInputEntityForMatrix>();
+        	for(MissionUserInputEntityForMatrix input : inputRepo) {           		
+        		if (regionId == input.getRegionId() && task.getTaskId().equals(input.getTaskId())) {
         			regionInputs.add(input);
         			inputCount++;
         			if(input.getFeedback() != null && !input.getFeedback().trim().isEmpty()) {
@@ -121,7 +126,7 @@ public class ServiceMatrixController {
                 task.setTaskStatus("Not started");
             } else {
                 task.setTaskStatus("Pending");
-                for (MissionUserInputEntity input : regionInputs) {
+                for (MissionUserInputEntityForMatrix input : regionInputs) {
                     if(task.getTaskId().equals(input.getTaskId()) && AppConstants.STTS_APPROVED.equals(input.getSttsId())) {
                         task.setTaskStatus("Validated");
                         break;

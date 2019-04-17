@@ -1,12 +1,17 @@
 package com.sbb.entity;
 
-import com.sbb.helper.AppConstants;
-import org.hibernate.annotations.Formula;
-
-import javax.persistence.*;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.Objects;
+
+import javax.persistence.Basic;
+import javax.persistence.Cacheable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.PostLoad;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "service_matrix", schema = "cdfw_sbb_d")
@@ -22,7 +27,7 @@ public class TaskCatalogEntity {
     private String desiredPerf;
     private String addtnlBudgetFator;
     private Integer frequency;
-    private StatusEntity statusBySttsId;
+//    private StatusEntity statusBySttsId;
     private int inputCount;
     private String myInput;
     private String taskStatus;
@@ -235,13 +240,13 @@ public class TaskCatalogEntity {
                 desiredPerf, addtnlBudgetFator );
     }
 
-    @ManyToOne
-    @JoinColumn(name = "stts_id", referencedColumnName = "stts_id")
-    public StatusEntity getStatusBySttsId() {
-        return statusBySttsId;
-    }
-
-    public void setStatusBySttsId(StatusEntity statusBySttsId) {
-        this.statusBySttsId = statusBySttsId;
-    }
+//    @ManyToOne
+//    @JoinColumn(name = "stts_id", referencedColumnName = "stts_id")
+//    public StatusEntity getStatusBySttsId() {
+//        return statusBySttsId;
+//    }
+//
+//    public void setStatusBySttsId(StatusEntity statusBySttsId) {
+//        this.statusBySttsId = statusBySttsId;
+//    }
 }
