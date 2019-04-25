@@ -80,6 +80,8 @@ public class MissionInputController {
         input.setInputValue(Integer.parseInt(request.get("inputValue")));
         input.setSttsId(status);
         input.setFeedback(request.get("feedback"));
+        input.setCreatedDtm(new Timestamp(System.currentTimeMillis()));
+        input.setUpdtdDtm(new Timestamp(System.currentTimeMillis()));
         if(AppConstants.STTS_APPROVED.equalsIgnoreCase(status)) {
         	input.setApproverId(Integer.parseInt(request.get("userId")));
         }
@@ -110,6 +112,7 @@ public class MissionInputController {
                 //if (!AppConstants.STTS_APPROVED.equals(input.getSttsId())) {
                     input.setSttsId(AppConstants.STTS_APPROVED);
                     input.setApproverId(approvedUserId);
+                    input.setUpdtdDtm(new Timestamp(System.currentTimeMillis()));
                     repository.save(input);
 
                   //  ServiceMatrixEntity matrix = serviceRepository.findById(taskId);
