@@ -38,6 +38,7 @@ public class ServiceMatrixEntity {
     private int feedbackCount;
     private String feedbackReceived;
     private String serviceGlossary;
+    private String toBeEnteredBy;
 
 
     @Id
@@ -221,6 +222,16 @@ public class ServiceMatrixEntity {
 
 	public void setFeedbackCount(int feedbackCount) {
 		this.feedbackCount = feedbackCount;
+	}
+
+	@Basic
+    @Column(name = "enter_by")
+	public String getToBeEnteredBy() {
+		return toBeEnteredBy;
+	}
+
+	public void setToBeEnteredBy(String toBeEnteredBy) {
+		this.toBeEnteredBy = toBeEnteredBy;
 	}
 
 	@PostLoad

@@ -35,6 +35,18 @@ public class TaskCatalogEntity {
     private int feedbackCount;
     private String feedbackReceived;
     private String serviceGlossary;
+    private String toBeEnteredBy;
+
+
+    @Basic
+    @Column(name = "enter_by")
+    public String getToBeEnteredBy() {
+		return toBeEnteredBy;
+	}
+
+	public void setToBeEnteredBy(String toBeEnteredBy) {
+		this.toBeEnteredBy = toBeEnteredBy;
+	}
 
     @Id
     @Column(name = "TASK_ID")

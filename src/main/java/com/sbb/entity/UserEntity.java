@@ -22,6 +22,7 @@ public class UserEntity {
     private Timestamp createdDtm;
     private Integer updatedBy;
     private Timestamp updatedDtm;
+    private String filter;
     private DataTypeEntity dataTypeByDataTypeId;
     private UserRoleEntity userRoleByRoleId;
     @JsonIgnore
@@ -111,8 +112,18 @@ public class UserEntity {
     public void setUpdatedDtm(Timestamp updatedDtm) {
         this.updatedDtm = updatedDtm;
     }
+    
+    @Basic
+    @Column(name = "filter")
+    public String getFilter() {
+		return filter;
+	}
 
-    @Override
+	public void setFilter(String filter) {
+		this.filter = filter;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
