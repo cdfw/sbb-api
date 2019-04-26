@@ -31,6 +31,13 @@ public class UserController {
         }
         return user;
    }
+    
+    @RequestMapping(path = "/saveFilter", method = RequestMethod.POST)
+    public void saveFilter(@RequestBody Map<String, String> request) {        
+        UserEntity user = repository.findById(Integer.parseInt(request.get("userId"))).get();
+        user.setFilter(request.get("filter"));
+        repository.save(user);
+    }
 
     @RequestMapping(path = "/logout", method = RequestMethod.POST)
     public void logoutUser(@RequestBody Map<String, Integer> request) {        
