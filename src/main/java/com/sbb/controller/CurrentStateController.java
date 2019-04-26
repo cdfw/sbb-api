@@ -1,14 +1,18 @@
 package com.sbb.controller;
 
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sbb.entity.CSUserLaborClassInputEntity;
@@ -65,5 +69,18 @@ public class CurrentStateController {
         List<TaskCatalogEntity> repo = (List<TaskCatalogEntity>) taskRepository.findAll();                
         return repo;
     }
+    
+    @RequestMapping(path = "/editCsInput", method = RequestMethod.POST)
+    public boolean editCsInput(@RequestBody Map<String, Object> request) {     
+        csUserLaborClassInputRepository.editCsInput(Integer.parseInt(request.get("userId").toString()), Integer.parseInt(request.get("regionId").toString()), request.get("positionId").toString(), request.get("taskId").toString(), new BigDecimal(request.get("inputHours").toString()));                
+        return true;
+    }
+    
+    @RequestMapping(path = "/deleteCsInput", method = RequestMethod.POST)
+    public boolean deleteCsInput(@RequestBody Map<String, Object> request) {      		
+    	csUserLaborClassInputRepository.deleteCsInput(Integer.parseInt(request.get("userId").toString()), Integer.parseInt(request.get("regionId").toString()), request.get("positionId").toString(), request.get("taskId").toString());                
+        return true;
+    }
+    
 
 }
