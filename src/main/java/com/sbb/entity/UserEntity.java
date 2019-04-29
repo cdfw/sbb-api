@@ -23,6 +23,7 @@ public class UserEntity {
     private Integer updatedBy;
     private Timestamp updatedDtm;
     private String filter;
+    private String activeInd;
     private DataTypeEntity dataTypeByDataTypeId;
     private UserRoleEntity userRoleByRoleId;
     @JsonIgnore
@@ -121,6 +122,16 @@ public class UserEntity {
 
 	public void setFilter(String filter) {
 		this.filter = filter;
+	}
+	
+    @Basic
+    @Column(name = "active_ind")
+	public String getActiveInd() {
+		return activeInd;
+	}
+
+	public void setActiveInd(String activeInd) {
+		this.activeInd = activeInd;
 	}
 
 	@Override

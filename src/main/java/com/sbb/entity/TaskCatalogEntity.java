@@ -36,6 +36,7 @@ public class TaskCatalogEntity {
     private String feedbackReceived;
     private String serviceGlossary;
     private String toBeEnteredBy;
+    private String activeInd;
 
 
     @Basic
@@ -223,6 +224,18 @@ public class TaskCatalogEntity {
 		this.feedbackCount = feedbackCount;
 	}
 
+	
+	@Basic
+    @Column(name = "active_ind")
+	public String getActiveInd() {
+		return activeInd;
+	}
+
+	public void setActiveInd(String activeInd) {
+		this.activeInd = activeInd;
+	}
+
+	
 	@PostLoad
     public final void postLoad() {
         

@@ -41,6 +41,7 @@ public class ServiceMatrixEntity {
     private String toBeEnteredBy;
 
 
+
     @Id
     @Column(name = "TASK_ID")
     public String getTaskId() {
@@ -233,6 +234,7 @@ public class ServiceMatrixEntity {
 	public void setToBeEnteredBy(String toBeEnteredBy) {
 		this.toBeEnteredBy = toBeEnteredBy;
 	}
+	
 
 	@PostLoad
     public final void postLoad() {

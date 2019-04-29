@@ -60,7 +60,7 @@ public class ServiceMatrixController {
     public List<TaskCatalogEntity> fetchServiceMatrix(@PathVariable("regionId")int regionId, @PathVariable("userId")String userId) {  
     	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
     	System.out.println("Fetching service matrix --> "+ dtf.format(LocalDateTime.now()));
-        List<TaskCatalogEntity> repo = (List<TaskCatalogEntity>) taskRepository.findAll();
+        List<TaskCatalogEntity> repo = (List<TaskCatalogEntity>) taskRepository.findActiveTasks();
         List<MissionUserInputEntityForMatrix> inputRepo = (List<MissionUserInputEntityForMatrix>)missionRepositoryMatrix.findAll();
         System.out.println("Processing service matrix --> "+ dtf.format(LocalDateTime.now()));
         processMyInput(repo, inputRepo, userId, regionId);

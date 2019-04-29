@@ -7,7 +7,7 @@ import com.sbb.entity.UserEntity;
 
 public interface UserRepository  extends CrudRepository<UserEntity, Integer> {
 
-    @Query("SELECT usr FROM UserEntity usr WHERE LOWER(usr.userName) = LOWER(:userName) AND usr.password = (:password)")
+    @Query("SELECT usr FROM UserEntity usr WHERE LOWER(usr.userName) = LOWER(:userName) AND usr.password = (:password) AND usr.activeInd= 'Y'")
     public UserEntity findByCredentials(@Param("userName") String userName, @Param("password") String password);
     
     @Query("SELECT usr FROM UserEntity usr WHERE user_token = :userToken ")
