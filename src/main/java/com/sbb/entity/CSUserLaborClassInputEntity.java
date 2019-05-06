@@ -5,7 +5,6 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
 @Entity
 @Table(name = "cs_user_labor_class_input", schema = "cdfwdev", catalog = "")
@@ -14,11 +13,12 @@ public class CSUserLaborClassInputEntity {
     private int regionId;
     private int userId;
     private String positionId;
-    private String laborClassName;
     private String taskId;
     private BigDecimal inputHours;
+    private String feedback;
     private CSUserLaborClassMappingEntity csUserLaborClassMapping;
-    private ServiceMatrixEntity serviceMatrixByTaskId;
+    private ServiceMatrixEntityBasic serviceMatrixByTaskId;
+    private UserEntity user;
 
     @Id
     @Column(name = "REGION_ID")
@@ -50,16 +50,6 @@ public class CSUserLaborClassInputEntity {
         this.positionId = positionId;
     }
 
-    @Basic
-    @Column(name = "LABOR_CLASS_NAME")
-    public String getLaborClassName() {
-        return laborClassName;
-    }
-
-    public void setLaborClassName(String laborClassName) {
-        this.laborClassName = laborClassName;
-    }
-
     @Id
     @Column(name = "TASK_ID")
     public String getTaskId() {
@@ -80,25 +70,67 @@ public class CSUserLaborClassInputEntity {
         this.inputHours = inputHours;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CSUserLaborClassInputEntity that = (CSUserLaborClassInputEntity) o;
-        return regionId == that.regionId &&
-                userId == that.userId &&
-                Objects.equals(positionId, that.positionId) &&
-                Objects.equals(laborClassName, that.laborClassName) &&
-                Objects.equals(taskId, that.taskId) &&
-                Objects.equals(inputHours, that.inputHours);
-    }
+    @Basic
+    @Column(name = "FEEDBACK")
+    public String getFeedback() {
+		return feedback;
+	}
+
+	public void setFeedback(String feedback) {
+		this.feedback = feedback;
+	}
+
 
     @Override
-    public int hashCode() {
-        return Objects.hash(regionId, userId, positionId, laborClassName, taskId, inputHours);
-    }
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((feedback == null) ? 0 : feedback.hashCode());
+		result = prime * result + ((inputHours == null) ? 0 : inputHours.hashCode());
+		result = prime * result + ((positionId == null) ? 0 : positionId.hashCode());
+		result = prime * result + regionId;
+		result = prime * result + ((taskId == null) ? 0 : taskId.hashCode());
+		result = prime * result + userId;
+		return result;
+	}
 
-    @JsonIgnore
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CSUserLaborClassInputEntity other = (CSUserLaborClassInputEntity) obj;
+		if (feedback == null) {
+			if (other.feedback != null)
+				return false;
+		} else if (!feedback.equals(other.feedback))
+			return false;
+		if (inputHours == null) {
+			if (other.inputHours != null)
+				return false;
+		} else if (!inputHours.equals(other.inputHours))
+			return false;
+		if (positionId == null) {
+			if (other.positionId != null)
+				return false;
+		} else if (!positionId.equals(other.positionId))
+			return false;
+		if (regionId != other.regionId)
+			return false;
+		if (taskId == null) {
+			if (other.taskId != null)
+				return false;
+		} else if (!taskId.equals(other.taskId))
+			return false;
+		if (userId != other.userId)
+			return false;
+		return true;
+	}
+
+	@JsonIgnore
     @ManyToOne
     @JoinColumns({@JoinColumn(name = "REGION_ID", referencedColumnName = "REGION_ID", nullable = false, updatable = false, insertable = false), 
     	@JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID", nullable = false, updatable = false, insertable = false), 
@@ -113,11 +145,21 @@ public class CSUserLaborClassInputEntity {
 
     @ManyToOne
     @JoinColumn(name = "TASK_ID", referencedColumnName = "TASK_ID", nullable = false, updatable = false, insertable = false)
-    public ServiceMatrixEntity getServiceMatrixByTaskId() {
+    public ServiceMatrixEntityBasic getServiceMatrixByTaskId() {
         return serviceMatrixByTaskId;
     }
 
-    public void setServiceMatrixByTaskId(ServiceMatrixEntity serviceMatrixByTaskId) {
+    public void setServiceMatrixByTaskId(ServiceMatrixEntityBasic serviceMatrixByTaskId) {
         this.serviceMatrixByTaskId = serviceMatrixByTaskId;
     }
+    
+    @ManyToOne
+    @JoinColumn(name = "USER_ID", referencedColumnName = "id", nullable = false, updatable = false, insertable = false)
+	public UserEntity getUser() {
+		return user;
+	}
+
+	public void setUser(UserEntity user) {
+		this.user = user;
+	}
 }

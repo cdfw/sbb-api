@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,31 +19,20 @@ import com.sbb.entity.CSUserLaborClassMappingEntity;
 import com.sbb.entity.TaskCatalogEntity;
 import com.sbb.repository.CSUserLaborClassInputRepository;
 import com.sbb.repository.CurrentStateRepository;
-import com.sbb.repository.MissionInputRepository;
-import com.sbb.repository.ServiceMatrixRepository;
 import com.sbb.repository.TaskCatalogRepository;
 
 
 @RestController
 public class CurrentStateController {
-
-    @Autowired
-    private ServiceMatrixRepository repository ;
     
     @Autowired
     private TaskCatalogRepository taskRepository ;
-    
-    @Autowired
-    private MissionInputRepository missionRepository ;
     
     @Autowired
     private CurrentStateRepository currentStateRepository;
     
     @Autowired
     private CSUserLaborClassInputRepository csUserLaborClassInputRepository;
-	
-    private static final String template = "Hello, %s!";
-    private final AtomicLong counter = new AtomicLong();
     
     @RequestMapping("/csservice/{regionCode}/{userId}")
     public List<CSUserLaborClassMappingEntity> fetchLaborClasses(@PathVariable("regionCode")int regionCode, @PathVariable("userId")int userId) {  
@@ -56,10 +44,19 @@ public class CurrentStateController {
     }
     
     @RequestMapping("/csservice/laborclasssummary/{regionCode}/{userId}/{positionId}")
-    public List<CSUserLaborClassInputEntity> fetchLaborClassHoursSummary(@PathVariable("regionCode")int regionCode, @PathVariable("userId")int userId, @PathVariable("positionId")String positionId) {  
+    public List<CSUserLaborClassInputEntity> fetchLaborClassHoursSummaryByUser(@PathVariable("regionCode")int regionCode, @PathVariable("userId")int userId, @PathVariable("positionId")String positionId) {  
     	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
     	System.out.println("Fetching Labor Class Summary --> "+ dtf.format(LocalDateTime.now()));
-        List<CSUserLaborClassInputEntity> repo = (List<CSUserLaborClassInputEntity>) csUserLaborClassInputRepository.findAllByIdAndRegionIdAndLaborClass(userId, regionCode, positionId);
+        List<CSUserLaborClassInputEntity> repo = (List<CSUserLaborClassInputEntity>) csUserLaborClassInputRepository.findAllByIdAndRegionIdAndPositionId(userId, regionCode, positionId);
+        System.out.println("Done with Labor Class Summary --> "+ dtf.format(LocalDateTime.now()));
+        return repo;
+    }
+    
+    @RequestMapping("/csservice/laborclasssummary/{regionCode}/{positionId}")
+    public List<CSUserLaborClassInputEntity> fetchLaborClassHoursSummary(@PathVariable("regionCode")int regionCode, @PathVariable("positionId")String positionId) {  
+    	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+    	System.out.println("Fetching Labor Class Summary --> "+ dtf.format(LocalDateTime.now()));
+        List<CSUserLaborClassInputEntity> repo = (List<CSUserLaborClassInputEntity>) csUserLaborClassInputRepository.findAllByRegionIdAndPositionId(regionCode, positionId);
         System.out.println("Done with Labor Class Summary --> "+ dtf.format(LocalDateTime.now()));
         return repo;
     }
@@ -70,9 +67,22 @@ public class CurrentStateController {
         return repo;
     }
     
+    @RequestMapping(path = "/addCsInput", method = RequestMethod.POST)
+    public CSUserLaborClassInputEntity addCsInput(@RequestBody Map<String, String> request) {  
+    	CSUserLaborClassInputEntity classInputEntity = new CSUserLaborClassInputEntity();
+    	classInputEntity.setRegionId(Integer.parseInt(request.get("regionId")));
+    	classInputEntity.setUserId(Integer.parseInt(request.get("userId")));
+    	classInputEntity.setPositionId(request.get("positionId"));
+    	classInputEntity.setTaskId(request.get("taskId"));
+    	classInputEntity.setInputHours(new BigDecimal(request.get("inputHours")));
+    	classInputEntity.setFeedback(request.get("feedback"));
+    	CSUserLaborClassInputEntity savedEntitiy = csUserLaborClassInputRepository.save(classInputEntity);         
+        return savedEntitiy;
+    }
+    
     @RequestMapping(path = "/editCsInput", method = RequestMethod.POST)
     public boolean editCsInput(@RequestBody Map<String, Object> request) {     
-        csUserLaborClassInputRepository.editCsInput(Integer.parseInt(request.get("userId").toString()), Integer.parseInt(request.get("regionId").toString()), request.get("positionId").toString(), request.get("taskId").toString(), new BigDecimal(request.get("inputHours").toString()));                
+        csUserLaborClassInputRepository.editCsInput(Integer.parseInt(request.get("userId").toString()), Integer.parseInt(request.get("regionId").toString()), request.get("positionId").toString(), request.get("taskId").toString(), new BigDecimal(request.get("inputHours").toString()), request.get("feedback").toString());                
         return true;
     }
     
