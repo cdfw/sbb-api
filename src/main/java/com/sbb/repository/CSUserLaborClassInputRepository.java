@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sbb.entity.CSUserLaborClassInputEntity;
+import com.sbb.model.CSUserLaborClassInputEntityModel;
 
 public interface CSUserLaborClassInputRepository extends CrudRepository<CSUserLaborClassInputEntity, Integer>{
 	
@@ -39,6 +40,11 @@ public interface CSUserLaborClassInputRepository extends CrudRepository<CSUserLa
     		@Param("positionId")String positionId, 
     		@Param("taskId")String taskId
     		);
+
+	@Query("SELECT new com.sbb.model.CSUserLaborClassInputEntityModel(lc.positionId, SUM(lc.inputHours) as hoursEntered) from CSUserLaborClassInputEntity lc "
+			+ " where lc.regionId = :regionId"
+			+ " group by lc.positionId")
+	public List<CSUserLaborClassInputEntityModel> findAllByRegionId(int regionId);
 
 
 }

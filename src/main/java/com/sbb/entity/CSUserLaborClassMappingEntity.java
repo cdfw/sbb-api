@@ -14,7 +14,8 @@ public class CSUserLaborClassMappingEntity {
     private String positionId;
     private String laborClassName;
     private BigDecimal hours;
-    private Collection<CSUserLaborClassInputEntity> csUserLaborClassInputs;
+    private BigDecimal hoursEntered;
+//    private Collection<CSUserLaborClassInputEntity> csUserLaborClassInputs;
     private RegionEntity regionByRegionId;
     private UserEntity userByUserId;
 
@@ -85,14 +86,14 @@ public class CSUserLaborClassMappingEntity {
         return Objects.hash(regionId, userId, positionId, laborClassName, hours);
     }
 
-    @OneToMany(mappedBy = "csUserLaborClassMapping")
-    public Collection<CSUserLaborClassInputEntity> getCsUserLaborClassInputs() {
-        return csUserLaborClassInputs;
-    }
-
-    public void setCsUserLaborClassInputs(Collection<CSUserLaborClassInputEntity> csUserLaborClassInputs) {
-        this.csUserLaborClassInputs = csUserLaborClassInputs;
-    }
+//    @OneToMany(mappedBy = "csUserLaborClassMapping")
+//    public Collection<CSUserLaborClassInputEntity> getCsUserLaborClassInputs() {
+//        return csUserLaborClassInputs;
+//    }
+//
+//    public void setCsUserLaborClassInputs(Collection<CSUserLaborClassInputEntity> csUserLaborClassInputs) {
+//        this.csUserLaborClassInputs = csUserLaborClassInputs;
+//    }
 
     @ManyToOne
     @JoinColumn(name = "REGION_ID", referencedColumnName = "region_id", nullable = false, updatable = false, insertable = false)
@@ -113,5 +114,14 @@ public class CSUserLaborClassMappingEntity {
     public void setUserByUserId(UserEntity userByUserId) {
         this.userByUserId = userByUserId;
     }
+
+    @Transient
+	public BigDecimal getHoursEntered() {
+		return hoursEntered;
+	}
+
+	public void setHoursEntered(BigDecimal hoursEntered) {
+		this.hoursEntered = hoursEntered;
+	}
 }
 

@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sbb.entity.CSUserLaborClassInputEntity;
 import com.sbb.entity.CSUserLaborClassMappingEntity;
 import com.sbb.entity.TaskCatalogEntity;
+import com.sbb.model.CSUserLaborClassInputEntityModel;
 import com.sbb.repository.CSUserLaborClassInputRepository;
 import com.sbb.repository.CurrentStateRepository;
 import com.sbb.repository.TaskCatalogRepository;
@@ -39,6 +41,15 @@ public class CurrentStateController {
     	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
     	System.out.println("Fetching Labor Classes --> "+ dtf.format(LocalDateTime.now()));
         List<CSUserLaborClassMappingEntity> repo = (List<CSUserLaborClassMappingEntity>) currentStateRepository.findAllByIdAndRegionId(userId, regionCode);
+        List<CSUserLaborClassInputEntityModel> inputs = csUserLaborClassInputRepository.findAllByRegionId(regionCode);
+        
+        Map<String, BigDecimal> inputPositionMap = inputs.stream()
+                .collect(Collectors.toMap(CSUserLaborClassInputEntityModel::getPositionId, CSUserLaborClassInputEntityModel::getHoursEntered));
+        
+        for(CSUserLaborClassMappingEntity e: repo) {
+        	e.setHoursEntered(inputPositionMap.get(e.getPositionId()));
+        }
+        
         System.out.println("Done with Labor Classes --> "+ dtf.format(LocalDateTime.now()));
         return repo;
     }
