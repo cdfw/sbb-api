@@ -109,16 +109,10 @@ public class MissionInputController {
             MissionUserInputEntity input = (MissionUserInputEntity)inputs.next();
             if ( userId == input.getId() && regionId == input.getRegionId() && taskId.equals(input.getTaskId())) {
                 approvedInput = input.getInputValue();
-                //if (!AppConstants.STTS_APPROVED.equals(input.getSttsId())) {
-                    input.setSttsId(AppConstants.STTS_APPROVED);
-                    input.setApproverId(approvedUserId);
-                    input.setUpdtdDtm(new Timestamp(System.currentTimeMillis()));
-                    repository.save(input);
-
-                  //  ServiceMatrixEntity matrix = serviceRepository.findById(taskId);
-                  //  matrix.setStatusBySttsId(statusRepository.findById(AppConstants.STTS_APPROVED));
-                  //  serviceRepository.save(matrix);
-                
+                input.setSttsId(AppConstants.STTS_APPROVED);
+                input.setApproverId(approvedUserId);
+                input.setUpdtdDtm(new Timestamp(System.currentTimeMillis()));
+                repository.save(input);
             }
             repository.rejectUnselectedInputs(regionId, taskId,userId);
         }

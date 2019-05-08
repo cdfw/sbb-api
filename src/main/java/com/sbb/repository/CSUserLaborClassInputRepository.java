@@ -21,7 +21,7 @@ public interface CSUserLaborClassInputRepository extends CrudRepository<CSUserLa
 
 	@Modifying
 	@Transactional
-	@Query("UPDATE CSUserLaborClassInputEntity lc SET inputHours = :inputHours, feedback = :feedback where lc.userId = :userId and lc.regionId = :regionId and lc.positionId = :positionId and lc.taskId = :taskId")
+	@Query("UPDATE CSUserLaborClassInputEntity lc SET inputHours = :inputHours, feedback = :feedback, updated_dtm = current_timestamp where lc.userId = :userId and lc.regionId = :regionId and lc.positionId = :positionId and lc.taskId = :taskId")
     public void editCsInput(
     		@Param("userId") int userId, 
     		@Param("regionId") int regionId, 
@@ -40,5 +40,27 @@ public interface CSUserLaborClassInputRepository extends CrudRepository<CSUserLa
     		@Param("taskId")String taskId
     		);
 
+	
+	@Modifying
+	@Transactional
+	@Query("UPDATE CSUserLaborClassInputEntity lc SET  lc.sttsId = 'A', lc.updtdDtm = current_timestamp, lc.approverId=:approverId"
+			+ " where lc.userId = :userId and lc.regionId = :regionId and lc.positionId = :positionId and lc.taskId = :taskId")
+    public void approveCsInput(
+    		@Param("userId") int userId, 
+    		@Param("regionId") int regionId, 
+    		@Param("positionId")String positionId, 
+    		@Param("taskId")String taskId,
+    		@Param("approverId")int approverId		
+    		);
+	
+	@Modifying
+	@Transactional
+	@Query("UPDATE CSUserLaborClassInputEntity lc SET  lc.sttsId = 'R', lc.updtdDtm = current_timestamp where lc.userId <> :userId and lc.regionId = :regionId and lc.positionId = :positionId and lc.taskId = :taskId")
+    public void rejectCsInputs(
+    		@Param("userId") int userId, 
+    		@Param("regionId") int regionId, 
+    		@Param("positionId")String positionId, 
+    		@Param("taskId")String taskId
+    		);
 
 }

@@ -2,6 +2,7 @@ package com.sbb.controller;
 
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -76,6 +77,9 @@ public class CurrentStateController {
     	classInputEntity.setTaskId(request.get("taskId"));
     	classInputEntity.setInputHours(new BigDecimal(request.get("inputHours")));
     	classInputEntity.setFeedback(request.get("feedback"));
+    	classInputEntity.setSttsId("P");
+    	classInputEntity.setCreatedDtm(new Timestamp(System.currentTimeMillis()));
+    	classInputEntity.setUpdtdDtm(new Timestamp(System.currentTimeMillis()));
     	CSUserLaborClassInputEntity savedEntitiy = csUserLaborClassInputRepository.save(classInputEntity);         
         return savedEntitiy;
     }
@@ -92,5 +96,11 @@ public class CurrentStateController {
         return true;
     }
     
+    @RequestMapping(path = "/approveCsInput", method = RequestMethod.POST)
+    public boolean approveCsInput(@RequestBody Map<String, Object> request) {     
+        csUserLaborClassInputRepository.approveCsInput(Integer.parseInt(request.get("userId").toString()), Integer.parseInt(request.get("regionId").toString()), request.get("positionId").toString(), request.get("taskId").toString(), Integer.parseInt(request.get("approverId").toString()));
+        csUserLaborClassInputRepository.rejectCsInputs(Integer.parseInt(request.get("userId").toString()), Integer.parseInt(request.get("regionId").toString()), request.get("positionId").toString(), request.get("taskId").toString());
+        return true;
+    }
 
 }
