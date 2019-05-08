@@ -26,6 +26,7 @@ public class UserEntity {
     private String activeInd;
     private DataTypeEntity dataTypeByDataTypeId;
     private UserRoleEntity userRoleByRoleId;
+    private UserRoleEntity userRoleByCsRoleId;
     @JsonIgnore
     private Collection<MissionUserInputEntity> missionUserInputsById;
     private Collection<UserRegionMappingEntity> userRegionMappingsById;
@@ -174,8 +175,18 @@ public class UserEntity {
     public void setUserRoleByRoleId(UserRoleEntity userRoleByRoleId) {
         this.userRoleByRoleId = userRoleByRoleId;
     }
+    
+    @ManyToOne
+    @JoinColumn(name = "cs_role_id", referencedColumnName = "role_id", nullable = false)
+    public UserRoleEntity getUserRoleByCsRoleId() {
+		return userRoleByCsRoleId;
+	}
 
-    @OneToMany(mappedBy = "userById")
+	public void setUserRoleByCsRoleId(UserRoleEntity userRoleByCsRoleId) {
+		this.userRoleByCsRoleId = userRoleByCsRoleId;
+	}
+
+	@OneToMany(mappedBy = "userById")
     public Collection<MissionUserInputEntity> getMissionUserInputsById() {
         return missionUserInputsById;
     }
