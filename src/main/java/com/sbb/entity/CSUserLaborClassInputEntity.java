@@ -26,6 +26,8 @@ public class CSUserLaborClassInputEntity {
 	private StatusEntity statusBySttsId;
 	private Integer approverId;
 	private UserEntity userByApproverId;
+	private Integer editedBy;
+	private UserEntity userByEditedBy;
 
 	@Id
 	@Column(name = "REGION_ID")
@@ -229,6 +231,28 @@ public class CSUserLaborClassInputEntity {
     public void setStatusBySttsId(StatusEntity statusBySttsId) {
         this.statusBySttsId = statusBySttsId;
     }
+    
+	@Basic
+	@Column(name = "updated_by", nullable = true)
+	public Integer getEditedBy() {
+		return editedBy;
+	}
+
+	public void setEditedBy(Integer editedBy) {
+		this.editedBy = editedBy;
+	}
+
+    @ManyToOne
+    @JoinColumn(name = "updated_by", referencedColumnName = "id", nullable = true, insertable = false, updatable = false)
+	public UserEntity getUserByEditedBy() {
+		return userByEditedBy;
+	}
+
+	public void setUserByEditedBy(UserEntity userByEditedBy) {
+		this.userByEditedBy = userByEditedBy;
+	}
+    
+    
 	
 }
 

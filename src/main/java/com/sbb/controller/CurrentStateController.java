@@ -97,7 +97,7 @@ public class CurrentStateController {
     
     @RequestMapping(path = "/editCsInput", method = RequestMethod.POST)
     public boolean editCsInput(@RequestBody Map<String, Object> request) {     
-        csUserLaborClassInputRepository.editCsInput(Integer.parseInt(request.get("userId").toString()), Integer.parseInt(request.get("regionId").toString()), request.get("positionId").toString(), request.get("taskId").toString(), new BigDecimal(request.get("inputHours").toString()), request.get("feedback").toString());                
+        csUserLaborClassInputRepository.editCsInput(Integer.parseInt(request.get("userId").toString()), Integer.parseInt(request.get("regionId").toString()), request.get("positionId").toString(), request.get("taskId").toString(), new BigDecimal(request.get("inputHours").toString()), request.get("feedback").toString(), Integer.parseInt(request.get("editedBy").toString()));                
         return true;
     }
     

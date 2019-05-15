@@ -3,6 +3,8 @@ package com.sbb.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -15,6 +17,7 @@ public class LaborClassEntity {
     private String taskId;
     @JsonIgnore
     private ServiceMatrixEntity serviceMatrixByTaskId;
+  /*  private LaborClassLookupEntity laborClassLookupByRoleId;*/
 
     @Id
     @Column(name = "title")
@@ -81,4 +84,16 @@ public class LaborClassEntity {
     public void setServiceMatrixByTaskId(ServiceMatrixEntity serviceMatrixByTaskId) {
         this.serviceMatrixByTaskId = serviceMatrixByTaskId;
     }
+
+    /*@ManyToOne
+    @JoinColumn(name = "role", referencedColumnName = "role", nullable = false, insertable = false, updatable = false)
+	public LaborClassLookupEntity getLaborClassLookupByRoleId() {
+		return laborClassLookupByRoleId;
+	}
+
+	public void setLaborClassLookupByRoleId(LaborClassLookupEntity laborClassLookupByRoleId) {
+		this.laborClassLookupByRoleId = laborClassLookupByRoleId;
+	}*/
+    
+    
 }
