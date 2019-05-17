@@ -18,6 +18,9 @@ public class ServiceMatrixEntityBasic {
     private String taskCategory;
     private String taskName;
     private String taskDesc;
+    private String desiredPerf;
+    private String addtnlBudgetFator;
+    private String serviceGlossary;
 
     @Id
     @Column(name = "TASK_ID")
@@ -88,24 +91,114 @@ public class ServiceMatrixEntityBasic {
     public void setTaskDesc(String taskDesc) {
         this.taskDesc = taskDesc;
     }    
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ServiceMatrixEntityBasic that = (ServiceMatrixEntityBasic) o;
-        return Objects.equals(taskId, that.taskId) &&
-                Objects.equals(serviceName, that.serviceName) &&
-                Objects.equals(program, that.program) &&
-                Objects.equals(subProgram, that.subProgram) &&
-                Objects.equals(taskCategory, that.taskCategory) &&
-                Objects.equals(taskName, that.taskName) &&
-                Objects.equals(taskDesc, that.taskDesc);
+    
+    @Basic
+    @Column(name = "service_glossary")
+    public String getServiceGlossary() {
+        return serviceGlossary;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(taskId, serviceName, program, subProgram, taskCategory, taskName, taskDesc);
+    public void setServiceGlossary(String serviceGlossary) {
+        this.serviceGlossary = serviceGlossary;
     }
+
+    @Basic
+    @Column(name = "desired_perf")
+    public String getDesiredPerf() {
+        return desiredPerf;
+    }
+
+    public void setDesiredPerf(String desiredPerf) {
+        this.desiredPerf = desiredPerf;
+    }
+
+    @Basic
+    @Column(name = "budget_factor")
+    public String getAddtnlBudgetFator() {
+        return addtnlBudgetFator;
+    }
+
+    public void setAddtnlBudgetFator(String addtnlBudgetFator) {
+        this.addtnlBudgetFator = addtnlBudgetFator;
+    }
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((addtnlBudgetFator == null) ? 0 : addtnlBudgetFator.hashCode());
+		result = prime * result + ((desiredPerf == null) ? 0 : desiredPerf.hashCode());
+		result = prime * result + ((program == null) ? 0 : program.hashCode());
+		result = prime * result + ((serviceGlossary == null) ? 0 : serviceGlossary.hashCode());
+		result = prime * result + ((serviceName == null) ? 0 : serviceName.hashCode());
+		result = prime * result + ((subProgram == null) ? 0 : subProgram.hashCode());
+		result = prime * result + ((taskCategory == null) ? 0 : taskCategory.hashCode());
+		result = prime * result + ((taskDesc == null) ? 0 : taskDesc.hashCode());
+		result = prime * result + ((taskId == null) ? 0 : taskId.hashCode());
+		result = prime * result + ((taskName == null) ? 0 : taskName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ServiceMatrixEntityBasic other = (ServiceMatrixEntityBasic) obj;
+		if (addtnlBudgetFator == null) {
+			if (other.addtnlBudgetFator != null)
+				return false;
+		} else if (!addtnlBudgetFator.equals(other.addtnlBudgetFator))
+			return false;
+		if (desiredPerf == null) {
+			if (other.desiredPerf != null)
+				return false;
+		} else if (!desiredPerf.equals(other.desiredPerf))
+			return false;
+		if (program == null) {
+			if (other.program != null)
+				return false;
+		} else if (!program.equals(other.program))
+			return false;
+		if (serviceGlossary == null) {
+			if (other.serviceGlossary != null)
+				return false;
+		} else if (!serviceGlossary.equals(other.serviceGlossary))
+			return false;
+		if (serviceName == null) {
+			if (other.serviceName != null)
+				return false;
+		} else if (!serviceName.equals(other.serviceName))
+			return false;
+		if (subProgram == null) {
+			if (other.subProgram != null)
+				return false;
+		} else if (!subProgram.equals(other.subProgram))
+			return false;
+		if (taskCategory == null) {
+			if (other.taskCategory != null)
+				return false;
+		} else if (!taskCategory.equals(other.taskCategory))
+			return false;
+		if (taskDesc == null) {
+			if (other.taskDesc != null)
+				return false;
+		} else if (!taskDesc.equals(other.taskDesc))
+			return false;
+		if (taskId == null) {
+			if (other.taskId != null)
+				return false;
+		} else if (!taskId.equals(other.taskId))
+			return false;
+		if (taskName == null) {
+			if (other.taskName != null)
+				return false;
+		} else if (!taskName.equals(other.taskName))
+			return false;
+		return true;
+	}
 
 }
