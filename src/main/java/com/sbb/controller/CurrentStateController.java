@@ -110,7 +110,7 @@ public class CurrentStateController {
     @RequestMapping(path = "/approveCsInput", method = RequestMethod.POST)
     public boolean approveCsInput(@RequestBody Map<String, Object> request) {     
         csUserLaborClassInputRepository.approveCsInput(Integer.parseInt(request.get("userId").toString()), Integer.parseInt(request.get("regionId").toString()), request.get("positionId").toString(), request.get("taskId").toString(), Integer.parseInt(request.get("approverId").toString()));
-        csUserLaborClassInputRepository.rejectCsInputs(Integer.parseInt(request.get("userId").toString()), Integer.parseInt(request.get("regionId").toString()), request.get("positionId").toString(), request.get("taskId").toString());
+       // csUserLaborClassInputRepository.rejectCsInputs(Integer.parseInt(request.get("userId").toString()), Integer.parseInt(request.get("regionId").toString()), request.get("positionId").toString(), request.get("taskId").toString());
         return true;
     }
 
