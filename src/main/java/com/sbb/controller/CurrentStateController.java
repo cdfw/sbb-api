@@ -75,7 +75,7 @@ public class CurrentStateController {
    
     @RequestMapping("/cslaborhours")
     public List<TaskCatalogEntity> fetchServiceMatrix() {      		
-        List<TaskCatalogEntity> repo = (List<TaskCatalogEntity>) taskRepository.findAll();                
+        List<TaskCatalogEntity> repo = (List<TaskCatalogEntity>) taskRepository.findActiveTasks();                
         return repo;
     }
     
