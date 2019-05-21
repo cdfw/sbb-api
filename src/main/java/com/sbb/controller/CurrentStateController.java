@@ -93,6 +93,11 @@ public class CurrentStateController {
     	classInputEntity.setUpdtdDtm(new Timestamp(System.currentTimeMillis()));
     	CSUserLaborClassInputEntity savedEntitiy = csUserLaborClassInputRepository.save(classInputEntity);         
         return savedEntitiy;
+    }    
+
+    @RequestMapping(path = "/getCsInput/{regionCode}/{userId}/{positionId}/{taskId}", method = RequestMethod.GET)
+    public CSUserLaborClassInputEntity getCsInput(@PathVariable("regionCode")int regionCode, @PathVariable("userId")int userId, @PathVariable("positionId")String positionId, @PathVariable("taskId")String taskId) {     
+        return csUserLaborClassInputRepository.getCsInput(regionCode, userId, positionId, taskId);                
     }
     
     @RequestMapping(path = "/editCsInput", method = RequestMethod.POST)

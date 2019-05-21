@@ -71,5 +71,8 @@ public interface CSUserLaborClassInputRepository extends CrudRepository<CSUserLa
 			+ " group by lc.positionId")
 	public List<CSUserLaborClassInputEntityModel> findAllByRegionId(int regionId);
 
+	@Query("SELECT lc from CSUserLaborClassInputEntity lc where lc.userId = :userId and lc.regionId = :regionId and lc.positionId = :positionId and lc.taskId = :taskId")
+	public CSUserLaborClassInputEntity getCsInput(@Param("regionId") int regionId, @Param("userId") int userId, @Param("positionId")String positionId, @Param("taskId")String taskId);
+
 
 }
