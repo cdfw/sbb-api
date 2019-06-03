@@ -28,6 +28,7 @@ public class CSUserLaborClassInputEntity {
 	private UserEntity userByApproverId;
 	private Integer editedBy;
 	private UserEntity userByEditedBy;
+	private boolean duplicateInd;
 
 	@Id
 	@Column(name = "REGION_ID")
@@ -250,6 +251,15 @@ public class CSUserLaborClassInputEntity {
 
 	public void setUserByEditedBy(UserEntity userByEditedBy) {
 		this.userByEditedBy = userByEditedBy;
+	}
+
+	@Transient
+	public boolean isDuplicateInd() {
+		return duplicateInd;
+	}
+
+	public void setDuplicateInd(boolean duplicateInd) {
+		this.duplicateInd = duplicateInd;
 	}
     
     

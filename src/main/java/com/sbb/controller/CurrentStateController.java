@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -118,5 +120,42 @@ public class CurrentStateController {
        // csUserLaborClassInputRepository.rejectCsInputs(Integer.parseInt(request.get("userId").toString()), Integer.parseInt(request.get("regionId").toString()), request.get("positionId").toString(), request.get("taskId").toString());
         return true;
     }
-
+    
+    @RequestMapping(path = "/copyTasks", method = RequestMethod.POST)
+    public String copyTasks(@RequestBody Map<String, Object> request) {     
+    	String status = "notasks";
+    	boolean duplicateFound = false;
+    	String sourcePosition = request.get("sourcePosition").toString();
+    	ArrayList<String> destinationPositions = (ArrayList<String>)request.get("destinationPositions");
+    	ArrayList<String> tasksToBeCopied = (ArrayList<String>)request.get("tasksToBeCopied");        
+    	List<CSUserLaborClassInputEntity> taskDetails  = csUserLaborClassInputRepository.fetchCsInputsByPositionsAndTasks(Integer.parseInt(request.get("regionId").toString()), sourcePosition, tasksToBeCopied);
+    	for(String destPosition : destinationPositions) {
+    		List<CSUserLaborClassInputEntity> destPositionTasks = csUserLaborClassInputRepository.findAllByRegionIdAndPositionId(Integer.parseInt(request.get("regionId").toString()), destPosition);       	
+    		for(CSUserLaborClassInputEntity destPositionTask : destPositionTasks) {
+    			for(CSUserLaborClassInputEntity sourceTask : taskDetails) {
+    				if(destPositionTask.getTaskId().equals(sourceTask.getTaskId())){
+    					status = "duplicate";
+    					sourceTask.setDuplicateInd(true);
+    				}
+    			}
+    		}
+   			for (CSUserLaborClassInputEntity inputTask: taskDetails) {
+   				if(!inputTask.isDuplicateInd()) {
+	    			CSUserLaborClassInputEntity taskToBeSaved = new CSUserLaborClassInputEntity();
+	    			taskToBeSaved.setPositionId(destPosition);
+	    			taskToBeSaved.setSttsId("P");
+	    			taskToBeSaved.setCreatedDtm(new Timestamp(System.currentTimeMillis()));
+	    			taskToBeSaved.setTaskId(inputTask.getTaskId());
+	    			taskToBeSaved.setRegionId(inputTask.getRegionId());
+	    			taskToBeSaved.setUserId(Integer.parseInt(request.get("userId").toString()));
+	    			taskToBeSaved.setInputHours(inputTask.getInputHours());
+	    			taskToBeSaved.setFeedback(inputTask.getFeedback());    			
+	    			csUserLaborClassInputRepository.save(taskToBeSaved);
+   				} else {
+   					inputTask.setDuplicateInd(false);
+   				}
+			}
+    	}  
+        return status;
+    }
 }

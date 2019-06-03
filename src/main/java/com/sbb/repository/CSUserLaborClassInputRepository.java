@@ -1,6 +1,7 @@
 package com.sbb.repository;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Modifying;
@@ -73,6 +74,10 @@ public interface CSUserLaborClassInputRepository extends CrudRepository<CSUserLa
 
 	@Query("SELECT lc from CSUserLaborClassInputEntity lc where lc.userId = :userId and lc.regionId = :regionId and lc.positionId = :positionId and lc.taskId = :taskId")
 	public CSUserLaborClassInputEntity getCsInput(@Param("regionId") int regionId, @Param("userId") int userId, @Param("positionId")String positionId, @Param("taskId")String taskId);
+
+	
+	@Query("SELECT lc from CSUserLaborClassInputEntity lc where lc.regionId = :regionId and lc.positionId = :positionId and lc.taskId in (:tasksToBeCopied)")
+	public List<CSUserLaborClassInputEntity> fetchCsInputsByPositionsAndTasks(@Param("regionId") int regionId, @Param("positionId")String positionId, @Param("tasksToBeCopied")ArrayList<String> tasksToBeCopied);
 
 
 }
