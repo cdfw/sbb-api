@@ -9,8 +9,8 @@ import org.springframework.data.repository.query.Param;
 import com.sbb.entity.CSUserLaborClassMappingEntity;
 
 public interface CurrentStateRepository extends CrudRepository<CSUserLaborClassMappingEntity, Integer> {
-
-    @Query("SELECT lc from CSUserLaborClassMappingEntity lc where lc.userId = :userId and lc.regionId = :regionId")
-    public List<CSUserLaborClassMappingEntity> findAllByIdAndRegionId(@Param("userId") int userId, @Param("regionId") int regionId);
-
+	
+    @Query("SELECT lc from CSUserLaborClassMappingEntity lc where lc.regionId = :regionId")
+    public List<CSUserLaborClassMappingEntity> findAllByIdAndRegionId(@Param("regionId") int regionId);
+    
 }

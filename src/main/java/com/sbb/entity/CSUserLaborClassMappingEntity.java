@@ -15,6 +15,8 @@ public class CSUserLaborClassMappingEntity {
     private String laborClassName;
     private BigDecimal hours;
     private BigDecimal hoursEntered;
+    private BigDecimal validatedHours;
+    private String respondentName;
 //    private Collection<CSUserLaborClassInputEntity> csUserLaborClassInputs;
     private RegionEntity regionByRegionId;
     private UserEntity userByUserId;
@@ -123,5 +125,27 @@ public class CSUserLaborClassMappingEntity {
 	public void setHoursEntered(BigDecimal hoursEntered) {
 		this.hoursEntered = hoursEntered;
 	}
+
+	@Transient
+	public String getRespondentName() {
+		return respondentName;
+	}
+
+	public void setRespondentName(String respondentName) {
+		this.respondentName = respondentName;
+	}
+
+	@Transient
+	public BigDecimal getValidatedHours() {
+		return validatedHours;
+	}
+
+	public void setValidatedHours(BigDecimal validatedHours) {
+		this.validatedHours = validatedHours;
+	}
+	
+	
+	
+	
 }
 
