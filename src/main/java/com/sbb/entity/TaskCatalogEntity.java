@@ -37,6 +37,7 @@ public class TaskCatalogEntity {
     private String serviceGlossary;
     private String toBeEnteredBy;
     private String activeInd;
+    private String updateInd;
 
 
     @Basic
@@ -234,8 +235,19 @@ public class TaskCatalogEntity {
 	public void setActiveInd(String activeInd) {
 		this.activeInd = activeInd;
 	}
-
 	
+	
+
+	@Basic
+    @Column(name = "update_ind")
+	public String getUpdateInd() {
+		return updateInd;
+	}
+
+	public void setUpdateInd(String updateInd) {
+		this.updateInd = updateInd;
+	}
+
 	@PostLoad
     public final void postLoad() {
         

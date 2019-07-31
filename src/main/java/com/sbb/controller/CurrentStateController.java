@@ -66,25 +66,34 @@ public class CurrentStateController {
                 .collect(Collectors.toMap(CSUserLaborClassInputEntityModel::getPositionId, CSUserLaborClassInputEntityModel::getHoursEntered)); 
         
         for(CSUserLaborClassMappingEntity e: positionMapping) {
+        
         	
         	e.setHoursEntered(inputPositionMap.get(e.getPositionId()) == null ? new BigDecimal(0) : inputPositionMap.get(e.getPositionId()));
         	e.setValidatedHours(validatedInputsPositionMap.get(e.getPositionId()) == null ? new BigDecimal(0):validatedInputsPositionMap.get(e.getPositionId()));
+        	System.out.println(e.getPositionId());
         	List<CSUserLaborClassMappingEntity> positionList = mappingGroupedByPosition.get(e.getPositionId());
-        	//positionList.stream().filter(distinctByKey(position -> position.getUserByUserId().getUserName())).forEach(position -> System.out.println(
-        			//position.getUserByUserId().getUserName()+ "," + position.getPositionId()));      
-        	List<CSUserLaborClassMappingEntity> positionListForDistinctUsers = positionList.stream().filter(distinctByKey(position -> position.getUserByUserId().getUserName()))
-        	.collect(Collectors.toCollection(LinkedList<CSUserLaborClassMappingEntity>::new));
-        	int i = 0;
-        	String respondentName = "";
-        	for (CSUserLaborClassMappingEntity pos : positionListForDistinctUsers) {
-        		if(i==0) {
-        			respondentName = respondentName + pos.getUserByUserId().getUserName();
-        		} else {
-        			respondentName = respondentName + ", " + pos.getUserByUserId().getUserName();
-        		}
-        		i++;
+        	if(e.getPositionId().equals("565-014-4552-001")) {
+        		System.out.println("test");
         	}
-        	e.setRespondentName(respondentName);
+        	//positionList.stream().filter(distinctByKey(position -> position.getUserByUserId().getUserName())).forEach(position -> System.out.println(
+        			//position.getUserByUserId().getUserName()+ "," + position.getPositionId()));
+        	if(null == positionList) {
+        		e.setRespondentName("");
+        	} else {
+	        	List<CSUserLaborClassMappingEntity> positionListForDistinctUsers = positionList.stream().filter(distinctByKey(position -> position.getUserByUserId().getUserName()))
+	        	.collect(Collectors.toCollection(LinkedList<CSUserLaborClassMappingEntity>::new));
+	        	int i = 0;
+	        	String respondentName = "";
+	        	for (CSUserLaborClassMappingEntity pos : positionListForDistinctUsers) {
+	        		if(i==0) {
+	        			respondentName = respondentName + pos.getUserByUserId().getUserName();
+	        		} else {
+	        			respondentName = respondentName + ", " + pos.getUserByUserId().getUserName();
+	        		}
+	        		i++;
+	        	}
+	        	e.setRespondentName(respondentName);																																						
+        	}
         }
         
         System.out.println("Done Fetching positions for landing page --> "+ userId+  "  ----->  " +dtf.format(LocalDateTime.now()));

@@ -132,7 +132,13 @@ public class ServiceMatrixController {
                         break;
                     }
                 }
-            }         
+            }       
+            
+            if("Y".equals(task.getUpdateInd())) {
+            	task.setUpdateInd("Yes");
+            } else {
+            	task.setUpdateInd("No");
+            }
         	
           /*  myInput = task.getMissionUserInputsByTaskId().stream().filter(
                     input -> Integer.parseInt(userId) == (input.getId()) && regionCode.equals(input.getRegionByRegionId().getRegionName())).
