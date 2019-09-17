@@ -167,9 +167,9 @@ var AuthenticationService = /** @class */ (function () {
         this.http = http;
         this.snackBar = snackBar;
         //API_URL: string = "http://ec2-18-220-6-166.us-east-2.compute.amazonaws.com:8080/";
-        //API_URL: string = "http://localhost:8080/";
+        // API_URL: string = "http://localhost:8080/";
         //API_URL: string = "http://cdfw-alb-prod-775994205.us-west-1.elb.amazonaws.com:9301/";
-        this.API_URL = "https://prod.cdfw-sbb.com/";
+        this.API_URL = "/";
     }
     AuthenticationService.prototype.login = function (username, password) {
         var self = this;
@@ -2901,7 +2901,8 @@ var ServiceMatrixService = /** @class */ (function () {
         this.http = http;
         //API_URL:string = "http://ec2-18-220-6-166.us-east-2.compute.amazonaws.com:8080/";
         //API_URL: string = "http://localhost:8080/";
-        this.API_URL = "https://prod.cdfw-sbb.com/";
+        //API_URL: string = "https://prod.cdfw-sbb.com/";
+        this.API_URL = "/";
         this.inputDataStore = [{
                 id: 1,
                 value: "5",
