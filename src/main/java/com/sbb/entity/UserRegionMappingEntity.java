@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "user_region_mapping", schema = "cdfw_sbb_d")
+@Table(name = "user_region_mapping")
 @IdClass(UserRegionMappingEntityPK.class)
 public class UserRegionMappingEntity {
     private int id;

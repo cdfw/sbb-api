@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Table(name = "service_matrix", schema = "cdfw_sbb_d")
+@Table(name = "service_matrix")
 public class ServiceMatrixEntity {
     private String taskId;
     private String serviceName;

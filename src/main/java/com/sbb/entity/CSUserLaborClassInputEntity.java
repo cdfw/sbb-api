@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "cs_user_labor_class_input", schema = "cdfwdev", catalog = "")
+@Table(name = "cs_user_labor_class_input")
 @IdClass(CSUserLaborClassInputEntityPK.class)
 public class CSUserLaborClassInputEntity {
 	private int regionId;

@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Table(name = "cs_user_labor_class_mapping", schema = "cdfwdev", catalog = "")
+@Table(name = "cs_user_labor_class_mapping")
 @IdClass(CSUserLaborClassMappingEntityPK.class)
 public class CSUserLaborClassMappingEntity {
     private int regionId;

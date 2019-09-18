@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Table(name = "user", schema = "cdfw_sbb_d")
+@Table(name = "user")
 public class UserEntity {
     private int id;
    // private int roleId;

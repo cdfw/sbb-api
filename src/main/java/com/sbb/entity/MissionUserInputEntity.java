@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-@Table(name = "mission_user_input", schema = "cdfw_sbb_d")
+@Table(name = "mission_user_input")
 @IdClass(MissionUserInputEntityPK.class)
 public class MissionUserInputEntity {
     private int id;

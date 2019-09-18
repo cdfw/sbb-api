@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Table(name = "user_role", schema = "cdfw_sbb_d")
+@Table(name = "user_role")
 public class UserRoleEntity {
     private int roleId;
     private String roleName;

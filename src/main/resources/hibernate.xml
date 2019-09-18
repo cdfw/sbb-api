@@ -4,8 +4,12 @@
     "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
   <session-factory>
+  	<!-- 
     <property name="connection.url">jdbc:mysql://USLMAPRAVGANDH2:3306/cdfw_sbb_d</property>
     <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+     -->
+    <property name="connection.url">jdbc:sqlserver://localhost:1433;databaseName=SBB;integratedSecurity=true</property>
+    <property name="connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
     <mapping class="com.sbb.entity.DataTypeEntity"/>
       <mapping class="com.sbb.entity.RegionEntity"/>
       <mapping class="com.sbb.entity.UserEntity"/>

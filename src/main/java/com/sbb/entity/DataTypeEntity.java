@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Table(name = "data_type", schema = "cdfw_sbb_d")
+@Table(name = "data_type")
 public class DataTypeEntity {
     private int dataTypeId;
     private String dataType;

@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "jrsdctn_ctgry", schema = "cdfw_sbb_d")
+@Table(name = "jrsdctn_ctgry")
 @IdClass(JrsdctnCtgryEntityPK.class)
 public class JrsdctnCtgryEntity {
     private String categoryName;

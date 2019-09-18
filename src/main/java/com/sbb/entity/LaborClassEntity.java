@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Table(name = "labor_class", schema = "cdfw_sbb_d")
+@Table(name = "labor_class")
 @IdClass(LaborClassEntityPK.class)
 public class LaborClassEntity {
     private String title;

@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "service_matrix", schema = "cdfw_sbb_d")
+@Table(name = "service_matrix")
 public class TaskCatalogEntity {
     private String taskId;
     private String serviceName;

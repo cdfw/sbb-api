@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Table(name = "labor_class_lookup", schema = "cdfw_sbb_d")
+@Table(name = "labor_class_lookup")
 public class LaborClassLookupEntity {
     private String role ;
     private String title;   

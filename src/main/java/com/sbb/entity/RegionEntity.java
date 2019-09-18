@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Table(name = "region", schema = "cdfw_sbb_d")
+@Table(name = "region")
 public class RegionEntity {
     private int regionId;
     private String regionName;

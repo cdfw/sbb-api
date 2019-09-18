@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Table(name = "status", schema = "cdfw_sbb_d")
+@Table(name = "status")
 public class StatusEntity {
     private String sttsId;
     private String statusCode;
